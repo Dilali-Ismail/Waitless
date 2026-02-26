@@ -63,4 +63,3 @@ public class Queue {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }
-}
