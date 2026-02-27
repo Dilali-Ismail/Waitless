@@ -1,13 +1,14 @@
 package com.waitless.queueservice.repository;
 
 import com.waitless.queueservice.entity.Queue;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface QueueRepository extends CrudRepository<Queue,Long> {
+public interface QueueRepository extends JpaRepository<Queue,Long> {
 
     List<Queue> findByCompanyId(Long companyId);
 
