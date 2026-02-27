@@ -76,9 +76,7 @@ public class EventPublisher {
 
     }
 
-
     //Counters events
-
 
     public void publishCounterOpened(Counter counter) {
         CounterEvent event = CounterEvent.builder()
@@ -107,9 +105,6 @@ public class EventPublisher {
         publishEvent(COUNTER_EVENTS_TOPIC, counter.getId().toString(), event);
         log.info("Published COUNTER_CLOSED event for counter: {}", counter.getId());
     }
-
-
-
 
     //publishEvent
 

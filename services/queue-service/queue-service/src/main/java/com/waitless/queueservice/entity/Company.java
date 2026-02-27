@@ -1,5 +1,6 @@
 package com.waitless.queueservice.entity;
 
+import com.waitless.queueservice.enums.CompanyStatus;
 import jakarta.*;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
@@ -41,7 +42,8 @@ public class Company {
 
     @Column(nullable = false)
     @Builder.Default
-    private String status = "ACTIVE";
+    @Enumerated(EnumType.STRING)
+    private CompanyStatus status = CompanyStatus.PENDING;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
