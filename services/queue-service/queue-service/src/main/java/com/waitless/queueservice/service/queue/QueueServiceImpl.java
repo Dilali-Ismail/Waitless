@@ -99,7 +99,7 @@ public class QueueServiceImpl implements QueueService {
 
     public void deleteQueue(Long id){
 
-        if(!queueRepository.existsById(id){
+        if(!queueRepository.existsById(id)){
             throw new RessourceNotFoundException("queue not found");
         }
         queueRepository.deleteById(id);
