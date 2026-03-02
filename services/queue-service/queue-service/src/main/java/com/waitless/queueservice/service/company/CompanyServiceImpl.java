@@ -4,7 +4,7 @@ import com.waitless.queueservice.dto.CompanyDTO;
 import com.waitless.queueservice.entity.Company;
 import com.waitless.queueservice.enums.CompanyStatus;
 import com.waitless.queueservice.exception.BusinessException;
-import com.waitless.queueservice.exception.RessourceNotFoundException;
+import com.waitless.queueservice.exception.ResourceNotFoundException;
 import com.waitless.queueservice.mapper.CompanyMapper;
 import com.waitless.queueservice.repository.CompanyRepository;
 import jakarta.transaction.Transactional;
@@ -46,7 +46,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     public CompanyDTO getCompanyById(Long id){
        Company company = companyRepository.findById(id)
-               .orElseThrow(() -> new RessourceNotFoundException("Company not found"));
+               .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
        return companyMapper.toDto(company);
     }
     public List<CompanyDTO> getCompaniesByCategory(String category){
@@ -62,7 +62,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO){
         Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Company not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
 
         if (!company.getEmail().equals(companyDTO.getEmail())
                 && companyRepository.existsByEmail(companyDTO.getEmail())) {
@@ -78,7 +78,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDTO activateCompany(Long id){
 
         Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Company not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
 
         company.setStatus(CompanyStatus.ACTIVE);
         companyRepository.save(company);
@@ -88,7 +88,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     public CompanyDTO suspendCompany(Long id){
         Company company =companyRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Company not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
         company.setStatus(CompanyStatus.SUSPENDED);
         companyRepository.save(company);
         return companyMapper.toDto(company);
@@ -96,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     public void deleteCompany(Long id){
         if(!companyRepository.existsById(id)){
-            throw new RessourceNotFoundException("Company not found");
+            throw new ResourceNotFoundException("Company not found");
         }
         companyRepository.deleteById(id);
     }
