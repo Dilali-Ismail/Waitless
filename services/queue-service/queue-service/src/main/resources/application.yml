@@ -1,0 +1,87 @@
+server:
+  port: 8081
+  # Pourquoi 8081 ? Convention (8080 = Gateway, 8081+ = microservices)
+
+spring:
+  application:
+    name: queue-service
+    # CRUCIAL : Ce nom sera utilisé dans Eureka et pour le routage
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/waitless_db
+    # En dev : localhost (PostgreSQL sur ta machine)
+    # En Docker : postgres:5432 (nom du container)
+    username: waitless
+    password: waitless123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      # update : Crée/modifie automatiquement les tables selon tes entities
+      # Pourquoi pas create-drop ? On veut garder les données entre redémarrages
+    show-sql: true
+    # Affiche les requêtes SQL dans les logs (utile pour débugger)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        # Format SQL pour meilleure lisibilité
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    # Adresse du broker Kafka
+    # En Docker : kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # Clé de partition = String (ex: queueId)
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # Valeur = JSON (notre événement)
+      properties:
+        spring.json.add.type.headers: false
+        # Pas besoin du header __TypeId__ (simplifie)
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/waitless-realm
+          # Keycloak valide les JWT tokens
+          # Le service va vérifier la signature avec la clé publique de Keycloak
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+      # Adresse d'Eureka Server
+    register-with-eureka: true
+    # OUI, enregistre ce service dans Eureka
+    fetch-registry: true
+    # OUI, récupère la liste des autres services
+  instance:
+    prefer-ip-address: true
+    # Utilise l'IP plutôt que le hostname (mieux pour Docker)
+
+waitless:
+  errors:
+    include-stacktrace: true
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    com.waitless.queue: DEBUG
+    # Logs détaillés pour notre package
+    org.springframework.kafka: INFO
+    # Logs Kafka (pas trop verbeux)
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
