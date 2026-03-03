@@ -42,7 +42,7 @@ services:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
@@ -54,22 +54,63 @@ services:
     networks:
       - waitless-network
 
-  # Eureka Server
   eureka-server:
     build:
       context: ../infrastructure/eureka-server/eureka-server
-      dockerfile: ../Dockerfile
+      dockerfile: Dockerfile
     container_name: waitless-eureka
     ports:
       - "8761:8761"
     networks:
       - waitless-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8761/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 40s
+
+  queue-service:
+    build:
+      context: ../services/queue-service/queue-service
+      dockerfile: Dockerfile
+    container_name: waitless-queue-service
+    environment:
+      # ⚠️ IMPORTANT : Override des URLs pour Docker network
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/waitless_db
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - waitless-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: waitless-kafka-ui
+    environment:
+      KAFKA_CLUSTERS_0_NAME: waitless-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: ""
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    ports:
+      - "8090:8080"
+    depends_on:
+      - kafka
+    networks:
+      - waitless-network
 
 volumes:
   postgres_data:

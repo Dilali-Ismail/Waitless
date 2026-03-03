@@ -77,12 +77,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     public CompanyDTO activateCompany(Long id){
 
+        log.info("Starting activation for company ID: {}", id);
         Company company = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company not found"));
 
+        log.info("Found company: {}, current status: {}", company.getName(), company.getStatus());
         company.setStatus(CompanyStatus.ACTIVE);
-        companyRepository.save(company);
-        return companyMapper.toDto(company);
+        
+        log.info("Saving company...");
+        Company saved = companyRepository.save(company);
+        
+        log.info("Company saved successfully. Mapping to DTO...");
+        return companyMapper.toDto(saved);
 
     }
 

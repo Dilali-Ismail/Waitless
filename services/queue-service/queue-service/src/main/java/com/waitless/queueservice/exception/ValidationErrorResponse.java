@@ -19,4 +19,6 @@ public class ValidationErrorResponse {
     private int status;
     private String error;
     private Map<String, String> validationErrors;
+    private String traceId;
+    private String stackTrace;
 }

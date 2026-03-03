@@ -49,7 +49,7 @@ public class CompanyController {
 
     @GetMapping("/category/{category}")
     public ResponseEntity<List<CompanyDTO>> getCompaniesByCategory(@PathVariable String category){
-        List<CompanyDTO> companyDTOs = companyService.getCompaniesByStatus(category);
+        List<CompanyDTO> companyDTOs = companyService.getCompaniesByCategory(category);
         return ResponseEntity.ok(companyDTOs);
     }
 
@@ -71,6 +71,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyDTO);
     }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletCompany(@PathVariable Long id){
         companyService.deleteCompany(id);
         return ResponseEntity.noContent().build();

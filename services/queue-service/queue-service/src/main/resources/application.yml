@@ -62,9 +62,26 @@ eureka:
     prefer-ip-address: true
     # Utilise l'IP plutôt que le hostname (mieux pour Docker)
 
+waitless:
+  errors:
+    include-stacktrace: true
+
 logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
   level:
     com.waitless.queue: DEBUG
     # Logs détaillés pour notre package
     org.springframework.kafka: INFO
     # Logs Kafka (pas trop verbeux)
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

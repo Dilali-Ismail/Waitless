@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class QueueController {
     private final QueueService queueService;
 
     @PostMapping
-    public ResponseEntity<QueueDTO> createQueue(@Valid @RequestBody QueueDTO queueDTO){
+    public ResponseEntity<QueueDTO> createQueue(@Validated(QueueDTO.OnCreate.class) @RequestBody QueueDTO queueDTO){
         QueueDTO created = queueService.createQueue(queueDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
@@ -52,7 +53,7 @@ public class QueueController {
     @PutMapping("/{id}")
     public ResponseEntity<QueueDTO> updateQueue(
             @PathVariable Long id,
-           @Valid @RequestBody QueueDTO queueDTO){
+           @Validated(QueueDTO.OnUpdate.class) @RequestBody QueueDTO queueDTO){
 
         QueueDTO updated = queueService.updateQueue(id, queueDTO);
         return ResponseEntity.ok(updated);

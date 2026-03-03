@@ -6,7 +6,7 @@ import com.waitless.queueservice.entity.Counter;
 import org.mapstruct.Mapper;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CounterMapper {
 
     @Mapping(source = "queue.id", target = "queueId")
