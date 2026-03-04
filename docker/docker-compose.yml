@@ -1,15 +1,18 @@
 services:
+  # ==================== DATABASES ====================
+
   postgres:
     image: postgres:15-alpine
     container_name: waitless-postgres
     environment:
-      POSTGRES_DB: waitless_db
       POSTGRES_USER: waitless
       POSTGRES_PASSWORD: waitless123
+      POSTGRES_MULTIPLE_DATABASES: queue_db,ticket_db,keycloak_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh:ro
     networks:
       - waitless-network
     healthcheck:
@@ -18,12 +21,34 @@ services:
       timeout: 5s
       retries: 5
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: waitless-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@waitless.com
+      PGADMIN_DEFAULT_PASSWORD: waitless123
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - waitless-network
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+  # ==================== INFRASTRUCTURE ====================
+
   keycloak:
     image: quay.io/keycloak/keycloak:23.0
     container_name: waitless-keycloak
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak_db
+      KC_DB_USERNAME: waitless
+      KC_DB_PASSWORD: waitless123
     command: start-dev
     ports:
       - "8180:8080"
@@ -54,6 +79,20 @@ services:
     networks:
       - waitless-network
 
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: waitless-kafka-ui
+    environment:
+      KAFKA_CLUSTERS_0_NAME: waitless-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    ports:
+      - "8090:8080"
+    depends_on:
+      - kafka
+    networks:
+      - waitless-network
+
   eureka-server:
     build:
       context: ../infrastructure/eureka-server/eureka-server
@@ -70,16 +109,20 @@ services:
       retries: 5
       start_period: 40s
 
+  # ==================== MICROSERVICES ====================
+
   queue-service:
     build:
       context: ../services/queue-service/queue-service
       dockerfile: Dockerfile
     container_name: waitless-queue-service
     environment:
-      # ⚠️ IMPORTANT : Override des URLs pour Docker network
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/waitless_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/queue_db
+      SPRING_DATASOURCE_USERNAME: waitless
+      SPRING_DATASOURCE_PASSWORD: waitless123
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/waitless-realm
     ports:
       - "8081:8081"
     depends_on:
@@ -97,23 +140,43 @@ services:
       timeout: 5s
       retries: 5
       start_period: 60s
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: waitless-kafka-ui
-    environment:
-      KAFKA_CLUSTERS_0_NAME: waitless-cluster
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_CLUSTERS_0_ZOOKEEPER: ""
-      DYNAMIC_CONFIG_ENABLED: 'true'
-    ports:
-      - "8090:8080"
-    depends_on:
-      - kafka
-    networks:
-      - waitless-network
+
+  # ticket-service:  ← À DÉCOMMENTER une fois le service créé
+  #   build:
+  #     context: ../services/ticket-service/ticket-service
+  #     dockerfile: Dockerfile
+  #   container_name: waitless-ticket-service
+  #   environment:
+  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ticket_db
+  #     SPRING_DATASOURCE_USERNAME: waitless
+  #     SPRING_DATASOURCE_PASSWORD: waitless123
+  #     SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+  #     QUEUE_SERVICE_URL: http://queue-service:8081
+  #     SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/waitless-realm
+  #   ports:
+  #     - "8082:8082"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #     eureka-server:
+  #       condition: service_healthy
+  #     kafka:
+  #       condition: service_started
+  #     queue-service:
+  #       condition: service_healthy
+  #   networks:
+  #     - waitless-network
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/actuator/health"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 60s
 
 volumes:
   postgres_data:
+  pgadmin_data:
 
 networks:
   waitless-network:
