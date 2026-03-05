@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
         @Index(name = "idx_status", columnList = "status"),
         @Index(name = "idx_queue_status", columnList = "queue_id,status")
 })
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,14 +29,11 @@ public class Ticket {
     @Column(name = "queue_id", nullable = false)
     private Long queueId;
 
+    @Column(name = "user_id", nullable = false, length = 255)
+    private String userId;
+
     @Column(name = "client_name", nullable = false, length = 100)
     private String clientName;
-
-    @Column(name = "client_phone", length = 20)
-    private String clientPhone;
-
-    @Column(name = "client_email", length = 100)
-    private String clientEmail;
 
     @Column(nullable = false)
     private Integer position;
@@ -48,6 +47,9 @@ public class Ticket {
     @Column(name = "scoring_priority")
     @Builder.Default
     private Integer scoringPriority = 0;
+
+    @Column(name = "estimated_wait_time")
+    private Integer estimatedWaitTime;
 
     @Column(name = "called_at")
     private LocalDateTime calledAt;
@@ -63,6 +65,12 @@ public class Ticket {
 
     @Column(name = "counter_number")
     private Integer counterNumber;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
 
 
