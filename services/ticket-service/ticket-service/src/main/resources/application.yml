@@ -37,6 +37,11 @@ eureka:
   instance:
     prefer-ip-address: true
 
+    
+app:
+  kafka:
+    topic:
+      ticket-events: ticket-events
 # REST Client pour Queue Service
 queue-service:
   url: http://localhost:8081

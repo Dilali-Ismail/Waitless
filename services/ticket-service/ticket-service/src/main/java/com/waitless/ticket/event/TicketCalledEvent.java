@@ -24,6 +24,7 @@ public class TicketCalledEvent {
 
     private Integer counterNumber;
 
+    private Integer previousPosition;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime calledAt;
 

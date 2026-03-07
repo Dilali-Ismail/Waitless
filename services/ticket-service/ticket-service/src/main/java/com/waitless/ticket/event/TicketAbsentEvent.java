@@ -19,7 +19,7 @@ public class TicketAbsentEvent {
     private Long queueId;
     private String userId;
 
-
+    private Integer counterNumber;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime calledAt;
