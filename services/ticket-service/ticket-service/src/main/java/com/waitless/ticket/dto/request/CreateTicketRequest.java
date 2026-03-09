@@ -15,11 +15,9 @@ public class CreateTicketRequest {
 
     @NotNull(message = "Queue ID est obligatoire")
     private Long queueId;
-    // ID de la file d'attente (vient de Queue Service)
 
     @NotBlank(message = "User ID est obligatoire")
     private String userId;
-    // ID utilisateur Keycloak (extrait du JWT token)
 
     @NotBlank(message = "Nom du client est obligatoire")
     private String clientName;

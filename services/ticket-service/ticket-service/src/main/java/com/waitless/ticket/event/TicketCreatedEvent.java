@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TicketCreatedEvent {
 
+    @Builder.Default
     private String eventType = "TICKET_CREATED";
     private Long ticketId;
     private Long queueId;

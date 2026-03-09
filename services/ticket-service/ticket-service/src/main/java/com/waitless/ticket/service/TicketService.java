@@ -27,7 +27,7 @@ public class TicketService {
     private final TicketMapper ticketMapper;
     private final EventPublisher eventPublisher;
 
-    public TicketResponse creatTicket(CreateTicketRequest request) throws IllegalAccessException {
+    public TicketResponse creatTicket(CreateTicketRequest request) {
 
         boolean hasActiveTicket = ticketRepository.existsByUserIdAndQueueIdAndStatus(
                 request.getUserId(),
@@ -36,7 +36,7 @@ public class TicketService {
         );
 
         if(hasActiveTicket){
-            throw new IllegalAccessException("Vous avez déjà un ticket actif dans cette file d'attente");
+            throw new IllegalStateException("Vous avez déjà un ticket actif dans cette file d'attente");
         }
 
         long waitingCount = ticketRepository.countByQueueIdAndStatus(
@@ -49,7 +49,7 @@ public class TicketService {
         Ticket ticket = Ticket.builder()
                 .queueId(request.getQueueId())
                 .userId(request.getUserId())
-                .status("WAITING")
+                .status(TicketStatus.WAITING)
                 .position(position)
                 .clientName(request.getClientName())
                 .scoringPriority(0)
@@ -67,21 +67,20 @@ public class TicketService {
 
     }
 
-    public TicketResponse callNextTicket(CallTicketRequest request) throws IllegalAccessException {
+    public TicketResponse callNextTicket(CallTicketRequest request) {
 
-        Ticket ticket = ticketRepository.findNextTicketInQueue (request.getQueueId())
-                .orElseThrow(()-> {
-                    return new IllegalAccessException("Auccun ticket en attente");
-                });
+            Ticket ticket = ticketRepository.findFirstByQueueIdAndStatusOrderByPositionAsc(request.getQueueId(), TicketStatus.WAITING)
+                .orElseThrow(() -> new IllegalStateException("Aucun ticket en attente"));
 
         int previousPosition = ticket.getPosition();
 
-        ticket.setStatus("CALLED");
+        ticket.setStatus(TicketStatus.CALLED);
         ticket.setCalledAt(LocalDateTime.now());
         ticket.setCounterNumber(request.getCounterNumber());
         ticket.setUpdatedAt(LocalDateTime.now());
         Ticket updatedTicket = ticketRepository.save(ticket);
-        eventPublisher.publishTicketCalled(updatedTicket,previousPosition);
+        eventPublisher.publishTicketCalled(updatedTicket, previousPosition);
+        recalculatePositions(ticket.getQueueId());
         return ticketMapper.toResponse(updatedTicket);
     }
 
@@ -94,7 +93,7 @@ public class TicketService {
             throw new IllegalArgumentException("ticket doit etre called");
         }
 
-        ticket.setStatus("COMPLETED");
+        ticket.setStatus(TicketStatus.COMPLETED);
         ticket.setCompletedAt(LocalDateTime.now());
         ticket.setUpdatedAt(LocalDateTime.now());
 
@@ -111,7 +110,7 @@ public class TicketService {
             throw new IllegalArgumentException("ticket doit etre called");
         }
 
-        ticket.setStatus("ABSENT");
+        ticket.setStatus(TicketStatus.ABSENT);
         ticket.setUpdatedAt(LocalDateTime.now());
 
         Ticket updatedTicket = ticketRepository.save(ticket);
@@ -129,7 +128,7 @@ public class TicketService {
             throw new IllegalArgumentException("ticket doit etre waiting");
         }
 
-        ticket.setStatus("CANCELLED");
+        ticket.setStatus(TicketStatus.CANCELLED);
         ticket.setUpdatedAt(LocalDateTime.now());
 
         Ticket updatedTicket = ticketRepository.save(ticket);

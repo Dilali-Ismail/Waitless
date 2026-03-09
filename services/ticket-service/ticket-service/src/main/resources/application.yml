@@ -1,12 +1,15 @@
 server:
   port: 8082
+  # Convention : 8080 = Gateway, 8081 = queue-service, 8082 = ticket-service
 
 spring:
   application:
     name: ticket-service
+    # CRUCIAL : Ce nom sera utilisé dans Eureka et pour le routage
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ticket_db
+    url: jdbc:postgresql://postgres:5432/ticket_db
+    # En Docker : postgres (nom du container), ticket_db (base dédiée au ticket-service)
     username: waitless
     password: waitless123
     driver-class-name: org.postgresql.Driver
@@ -14,39 +17,74 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      # update : Crée/modifie automatiquement les tables selon les @Entity
+      # Même approche que le queue-service
     show-sql: true
+    # Affiche les requêtes SQL dans les logs (utile pour débugger)
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        # Format SQL pour meilleure lisibilité
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
+    # En Docker : kafka:9092
+    consumer:
+      group-id: ticket-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.add.type.headers: false
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.add.type.headers: false
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/waitless-realm
+          # Keycloak valide les JWT tokens
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka/
+      # Adresse d'Eureka Server (nom du container Docker)
     register-with-eureka: true
     fetch-registry: true
   instance:
     prefer-ip-address: true
+    # Utilise l'IP plutôt que le hostname (mieux pour Docker)
+    instance-id: ${spring.application.name}:${server.port}
 
-    
+waitless:
+  errors:
+    include-stacktrace: true
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    com.waitless.ticket: DEBUG
+    # Logs détaillés pour notre package
+    org.springframework.kafka: INFO
+
 app:
   kafka:
     topic:
       ticket-events: ticket-events
-# REST Client pour Queue Service
-queue-service:
-  url: http://localhost:8081
+      # Nom du topic Kafka pour les événements du ticket-service
 
 management:
+  tracing:
+    sampling:
+      probability: 1.0
   endpoints:
     web:
       exposure:
@@ -54,9 +92,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-logging:
-  level:
-    com.waitless.ticket: DEBUG
-    org.springframework.kafka: INFO
-    org.springframework.web.client: DEBUG

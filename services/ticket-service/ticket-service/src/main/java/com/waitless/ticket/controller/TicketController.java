@@ -98,11 +98,11 @@ public class TicketController {
     public ResponseEntity<List<TicketResponse>> getMyTickets(
             @RequestParam String userId) {
 
-        log.info("📥 GET /api/tickets/me - User: {}", userId);
+        log.info("GET /api/tickets/me - User: {}", userId);
 
         List<TicketResponse> tickets = ticketService.getUserTickets(userId);
 
-        log.info("✅ {} tickets trouvés", tickets.size());
+        log.info(" {} tickets trouvés", tickets.size());
 
         return ResponseEntity.ok(tickets);
     }

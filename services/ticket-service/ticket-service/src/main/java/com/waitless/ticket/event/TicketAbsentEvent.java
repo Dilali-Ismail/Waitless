@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TicketAbsentEvent {
 
+    @Builder.Default
     private String eventType = "TICKET_ABSENT";
     private Long ticketId;
     private Long queueId;

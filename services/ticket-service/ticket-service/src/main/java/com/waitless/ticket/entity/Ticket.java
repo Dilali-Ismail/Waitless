@@ -1,6 +1,7 @@
 package com.waitless.ticket.entity;
 
 
+import com.waitless.ticket.enums.TicketStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,12 +38,11 @@ public class Ticket {
 
     @Column(nullable = false)
     private Integer position;
-    // Position dans la file (1 = premier, 2 = deuxième, etc.)
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     @Builder.Default
-    private String status = "WAITING";
-    // WAITING, CALLED, SERVING, SERVED, CANCELLED, NO_SHOW
+    private TicketStatus status = TicketStatus.WAITING;
 
     @Column(name = "scoring_priority")
     @Builder.Default
@@ -53,15 +53,12 @@ public class Ticket {
 
     @Column(name = "called_at")
     private LocalDateTime calledAt;
-    // Quand le client a été appelé
 
     @Column(name = "served_at")
     private LocalDateTime servedAt;
-    // Quand le service a commencé
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
-    // Quand le service est terminé
 
     @Column(name = "counter_number")
     private Integer counterNumber;

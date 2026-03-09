@@ -31,7 +31,7 @@ public class EventPublisher {
                 .userId(ticket.getUserId())
                 .clientName(ticket.getClientName())
                 .position(ticket.getPosition())
-                .status(ticket.getStatus())
+                .status(ticket.getStatus().name())
                 .createdAt(ticket.getCreatedAt())
                 .timestamp(LocalDateTime.now())
                 .build();

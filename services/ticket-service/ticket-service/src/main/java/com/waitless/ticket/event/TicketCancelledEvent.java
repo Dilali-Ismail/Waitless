@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TicketCancelledEvent {
 
+    @Builder.Default
     private String eventType = "TICKET_CANCELLED";
 
     private Long ticketId;
