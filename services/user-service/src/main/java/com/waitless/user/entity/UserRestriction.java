@@ -1,5 +1,6 @@
 package com.waitless.user.entity;
 
+import com.waitless.user.enums.RestrictionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +35,8 @@ public class UserRestriction {
      */
 
     @Column(name = "restriction_type", nullable = false, length = 20)
-    private String restrictionType;
+    @Enumerated(EnumType.STRING)
+    private RestrictionType restrictionType;
 
     @Column(name = "reason", nullable = false, length = 500)
     private String reason;
