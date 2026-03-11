@@ -35,6 +35,12 @@ spring:
       ticket-called: ticket.called
       ticket-cancelled: ticket.cancelled
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/waitless-realm
+
 eureka:
   client:
     service-url:
@@ -52,7 +58,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: "*"
   endpoint:
     health:
       show-details: always

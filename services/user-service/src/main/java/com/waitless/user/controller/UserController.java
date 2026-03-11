@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserByUserId(@PathVariable String userId) {
+    public ResponseEntity<UserDTO> getUserByUserId(@PathVariable("userId") String userId) {
 
         UserDTO user = userService.getUserByUserId(userId);
 
@@ -41,7 +41,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(
-            @PathVariable String userId,
+            @PathVariable("userId") String userId,
             @Valid @RequestBody UpdateUserRequest request) {
 
         log.info("Updating user: userId={}", userId);
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId) {
 
         userService.deleteUser(userId);
 
@@ -70,14 +70,14 @@ public class UserController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<UserDTO>> getUsersByStatus(@PathVariable UserStatus status) {
+    public ResponseEntity<List<UserDTO>> getUsersByStatus(@PathVariable("status") UserStatus status) {
 
         List<UserDTO> users = userService.getUsersByStatus(status);
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") String email) {
         log.debug("Fetching user by email: {}", email);
 
         UserDTO user = userService.getUserByEmail(email);
