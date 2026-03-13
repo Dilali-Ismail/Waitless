@@ -23,11 +23,12 @@ public class RestrictionService {
 
     private final UserRepository userRepository;
     private final UserRestrictionRepository userRestrictionRepository;
+    private final ScoringService scoringService;
 
     private static final int WARNING_THRESHOLD = 3;
     private static final int NO_SHOW_THRESHOLD = 2;
     private static final int SUSPENSION_THRESHOLD = 3;
-    private static final int CANCELLATION_WARNING_MINUTES = 30;
+    private static final int CANCELLATION_WARNING_MINUTES = 2;
     private static final int SUSPENSION_DURATION_HOURS = 24;
 
 
@@ -39,6 +40,8 @@ public class RestrictionService {
         user.setWarningCount(user.getWarningCount() + 1);
 
         creationRestrictionAudit(userId,RestrictionType.WARNING,reason,ticketId);
+
+        scoringService.deductPoints(userId,20.0,"WARNING :"+ reason);
 
         if(user.getWarningCount() >= WARNING_THRESHOLD){
             applySuspension(userId,"3 warnings accumulated");
@@ -56,6 +59,8 @@ public class RestrictionService {
         user.setNoShowCount(user.getNoShowCount() + 1);
 
         creationRestrictionAudit(userId,RestrictionType.NO_SHOW,reason,ticketId);
+
+        scoringService.deductPoints(userId,50.0,"NO_SHOW :"+ reason);
         if(user.getNoShowCount() >= NO_SHOW_THRESHOLD){
             applySuspension(userId,"2 no-shows accumulated");
         }
@@ -73,7 +78,7 @@ public class RestrictionService {
         user.setSuspensionCount(user.getSuspensionCount() + 1);
 
         user.setWarningCount(0);
-        user.setWarningCount(0);
+        user.setNoShowCount(0);
 
         String detailedReason = String.format(
                 "Suspension for %dh. Reason: %s. Total suspensions: %d/%d. Ends at: %s",
@@ -86,7 +91,7 @@ public class RestrictionService {
 
         creationRestrictionAudit(userId,RestrictionType.SUSPENDED,detailedReason,null);
 
-        if(user.getWarningCount() >= SUSPENSION_THRESHOLD){
+        if(user.getSuspensionCount() >= SUSPENSION_THRESHOLD){
             applyBan(userId,"3 suspensions accumulated");
         } else{
             userRepository.save(user);
@@ -140,6 +145,22 @@ public class RestrictionService {
         }
 
         return false;
+    }
+
+    public void incrementTicketsCreated(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        user.setTicketsCreated(user.getTicketsCreated() + 1);
+        userRepository.save(user);
+    }
+
+    public void incrementTicketsServed(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        user.setTicketsServed(user.getTicketsServed() + 1);
+        userRepository.save(user);
     }
 
     public void incrementTicketsCancelled(String userId) {

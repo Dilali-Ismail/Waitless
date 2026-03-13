@@ -24,16 +24,6 @@ public class UserRestriction {
     @Column(name = "user_id", nullable = false, length = 36)
     private String userId;
 
-    /**
-     * Type de restriction appliquée.
-     *
-     * Valeurs possibles:
-     * - WARNING: Annulation tardive (< 30min avant)
-     * - NO_SHOW: Annulation après heure prévue
-     * - SUSPENDED: Compte suspendu 24h
-     * - BANNED: Compte banni définitivement
-     */
-
     @Column(name = "restriction_type", nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private RestrictionType restrictionType;
