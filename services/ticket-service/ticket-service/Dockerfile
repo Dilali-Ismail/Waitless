@@ -2,18 +2,12 @@ FROM maven:3.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Copier d'abord pom.xml (cache Docker layer)
+# Copier pom.xml + sources
 COPY pom.xml .
-
-# Télécharger dépendances (layer caché si pom.xml ne change pas)
-RUN mvn dependency:go-offline
-
-# Copier le code source
 COPY src ./src
 
-# Compiler et packager
-RUN mvn clean package -DskipTests
-# -DskipTests : pas de tests (on va vite pour dev)
+# Compiler et packager (télécharge les deps + build en une seule étape)
+RUN mvn clean package -DskipTests -B
 
 # ═══════════════════════════════════════════════════════════════════
 # ÉTAPE 2 : RUNTIME (Exécution)
