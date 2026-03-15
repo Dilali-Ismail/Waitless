@@ -120,6 +120,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- OpenFeign pour la communication inter-services -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!-- ✅ Aligné sur queue-service -->
         <dependency>
             <groupId>org.springframework.security</groupId>

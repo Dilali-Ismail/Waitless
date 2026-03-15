@@ -1,9 +1,13 @@
 package com.waitless.ticket.service;
 
 
+import com.waitless.ticket.client.EstimationClient;
+import com.waitless.ticket.client.UserClient;
 import com.waitless.ticket.dto.request.CallTicketRequest;
 import com.waitless.ticket.dto.request.CreateTicketRequest;
+import com.waitless.ticket.dto.response.EstimationResponse;
 import com.waitless.ticket.dto.response.TicketResponse;
+import com.waitless.ticket.dto.response.UserResponse;
 import com.waitless.ticket.entity.Ticket;
 import com.waitless.ticket.enums.TicketStatus;
 import com.waitless.ticket.mapper.TicketMapper;
@@ -27,7 +31,16 @@ public class TicketService {
     private final TicketMapper ticketMapper;
     private final EventPublisher eventPublisher;
 
+    private final UserClient userClient;
+    private final EstimationClient estimationClient;
+
     public TicketResponse creatTicket(CreateTicketRequest request) {
+
+        UserResponse user = userClient.getUserById(request.getUserId());
+
+        if("SUSPENDED".equals(user.getStatus()) || "BANNED".equals(user.getStatus())){
+            throw new IllegalStateException("Creation de ticket refuser : Utilisateur " + user.getStatus());
+        }
 
         boolean hasActiveTicket = ticketRepository.existsByUserIdAndQueueIdAndStatus(
                 request.getUserId(),
@@ -46,6 +59,9 @@ public class TicketService {
 
         int position = (int) (waitingCount + 1);
 
+        EstimationResponse estimation = estimationClient.calculateEstimation(request.getQueueId(), position);
+
+
         Ticket ticket = Ticket.builder()
                 .queueId(request.getQueueId())
                 .userId(request.getUserId())
@@ -53,7 +69,7 @@ public class TicketService {
                 .position(position)
                 .clientName(request.getClientName())
                 .scoringPriority(0)
-                .estimatedWaitTime(null)
+                .estimatedWaitTime(estimation.getEstimatedWaitMinutes())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();

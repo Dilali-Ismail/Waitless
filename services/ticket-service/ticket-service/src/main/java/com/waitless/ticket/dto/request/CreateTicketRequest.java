@@ -22,4 +22,6 @@ public class CreateTicketRequest {
     @NotBlank(message = "Nom du client est obligatoire")
     private String clientName;
 
+    private Integer estimatedWaitTime;
+
 }
