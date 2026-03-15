@@ -2,7 +2,7 @@ package com.waitless.estimation.service;
 
 import com.waitless.estimation.dto.EstimationRequest;
 import com.waitless.estimation.dto.EstimationResponse;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,16 @@ public class EstimationService {
     private Map<Long, Integer> queueServiceTimes;
 
     public EstimationResponse calculateEstimation(EstimationRequest request){
+
+        if (request.getQueueId() == null || request.getQueueId() <= 0) {
+            log.error("Invalid queueId: {}", request.getQueueId());
+            throw new IllegalArgumentException("Queue ID must be positive");
+        }
+
+        if (request.getPosition() == null || request.getPosition() < 1) {
+            log.error("Invalid position: {}", request.getPosition());
+            throw new IllegalArgumentException("Position must be at least 1");
+        }
 
         int averageServiceTime = getAverageServiceTimeForQueue(request.getQueueId());
 
