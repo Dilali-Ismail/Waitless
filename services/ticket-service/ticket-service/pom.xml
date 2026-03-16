@@ -99,7 +99,10 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
         <!-- ✅ Micrometer Tracing — aligné sur queue-service -->
         <dependency>
             <groupId>io.micrometer</groupId>
