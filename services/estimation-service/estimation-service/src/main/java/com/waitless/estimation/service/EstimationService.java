@@ -17,7 +17,7 @@ public class EstimationService {
     private int defaultServiceTime;
 
     @Value("#{${estimation.queue-service-times:{}}}")
-    private Map<Long, Integer> queueServiceTimes;
+    private Map<Long, Integer> queueServiceTimes = new java.util.HashMap<>();
 
     public EstimationResponse calculateEstimation(EstimationRequest request){
 
