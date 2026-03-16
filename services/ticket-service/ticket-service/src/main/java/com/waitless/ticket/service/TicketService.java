@@ -37,8 +37,9 @@ public class TicketService {
     public TicketResponse creatTicket(CreateTicketRequest request) {
 
         UserResponse user = userClient.getUserById(request.getUserId());
-        if ("SUSPENDED".equals(user.getStatus()) || "BANNED".equals(user.getStatus())) {
-            throw new IllegalStateException("Création de ticket refusée : Utilisateur " + user.getStatus());
+
+        if("SUSPENDED".equals(user.getStatus()) || "BANNED".equals(user.getStatus())){
+            throw new IllegalStateException("Creation de ticket refuser : Utilisateur " + user.getStatus());
         }
 
         boolean hasActiveTicket = ticketRepository.existsByUserIdAndQueueIdAndStatus(
@@ -56,10 +57,10 @@ public class TicketService {
                 TicketStatus.WAITING
         );
 
-
-
         int position = (int) (waitingCount + 1);
-        EstimationResponse estimation = estimationClient.calculateEstimation(request.getQueueId(),position);
+
+        EstimationResponse estimation = estimationClient.calculateEstimation(request.getQueueId(), position);
+
 
         Ticket ticket = Ticket.builder()
                 .queueId(request.getQueueId())
@@ -176,14 +177,6 @@ public class TicketService {
 
         for(Ticket ticket : waitingTickets){
             ticket.setPosition(newPosition);
-
-            try {
-                EstimationResponse estimation = estimationClient.calculateEstimation(queueId, newPosition);
-                ticket.setEstimatedWaitTime(estimation.getEstimatedWaitMinutes());
-            } catch (Exception e) {
-                log.error("Erreur lors du recalcul de l'estimation pour le ticket {}: {}", ticket.getId(), e.getMessage());
-            }
-
             ticket.setUpdatedAt(LocalDateTime.now());
             newPosition++;
         }

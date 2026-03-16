@@ -101,10 +101,10 @@ public class EventPublisher {
         Integer estimatedWaitTime = ticket.getEstimatedWaitTime();
         boolean isLateCancellation = false;
 
-        if (estimatedWaitTime != null) {
-            LocalDateTime estimatedCallTime = now.plusMinutes(estimatedWaitTime);
+        if (estimatedWaitTime != null && ticket.getCreatedAt() != null) {
+            LocalDateTime estimatedCallTime = ticket.getCreatedAt().plusMinutes(estimatedWaitTime);
             long minutesBeforeTurn = ChronoUnit.MINUTES.between(now, estimatedCallTime);
-            isLateCancellation = minutesBeforeTurn < 30;
+            isLateCancellation = minutesBeforeTurn < 2;
         }
 
         TicketCancelledEvent event = TicketCancelledEvent.builder()

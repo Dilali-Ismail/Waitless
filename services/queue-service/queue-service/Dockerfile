@@ -5,15 +5,10 @@ WORKDIR /app
 
 # Copier le pom.xml d'abord (pour cache Docker)
 COPY pom.xml .
-
-# Télécharger les dépendances (mis en cache si pom.xml ne change pas)
-RUN mvn dependency:go-offline -B
-
-# Copier le code source
 COPY src ./src
 
-# Compiler et packager (skip tests pour aller plus vite en dev)
-RUN mvn clean package -DskipTests
+# Compiler et packager (télécharge les deps + build en une seule étape)
+RUN mvn clean package -DskipTests -B
 
 # ==================== STAGE 2 : RUNTIME ====================
 FROM eclipse-temurin:17-jre-alpine

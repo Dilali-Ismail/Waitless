@@ -6,7 +6,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-# Compiler et packager (télécharge les deps + build en une seule étape)
+# Compiler et packager
 RUN mvn clean package -DskipTests -B
 
 # ═══════════════════════════════════════════════════════════════════
@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Exposer le port
-EXPOSE 8082
+EXPOSE 8084
 
 # Démarrer l'application
 ENTRYPOINT ["java", "-jar", "app.jar"]

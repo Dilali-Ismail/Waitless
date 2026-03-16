@@ -1,39 +1,39 @@
-#!/bin/bash
+﻿#!/bin/bash
 # =============================================================================
 # init-multiple-databases.sh
-# -----------------------------------------------------------------------------
-# Ce script est exécuté automatiquement par PostgreSQL au premier démarrage
-# du container (via /docker-entrypoint-initdb.d/).
+# =============================================================================
+# This script is automatically executed by PostgreSQL on first container start
+# (via /docker-entrypoint-initdb.d/).
 #
-# Il crée une base de données séparée pour chaque microservice à partir de:
+# It creates a separate database for each microservice based on:
 #   POSTGRES_MULTIPLE_DATABASES="queue_db,ticket_db,keycloak_db"
 # =============================================================================
 
 set -e
 set -u
 
-# Fonction : créer une base et accorder les droits à l'utilisateur principal
+# Function: create a database and grant privileges to the main user
 create_user_and_database() {
     local database=$1
-    echo "  [init] Création de la base '$database' pour l'utilisateur '$POSTGRES_USER'"
+    echo "  [init] Creating database '$database' for user '$POSTGRES_USER'"
     psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
         CREATE DATABASE $database;
         GRANT ALL PRIVILEGES ON DATABASE $database TO $POSTGRES_USER;
 EOSQL
 }
 
-# Lecture de la variable POSTGRES_MULTIPLE_DATABASES
+# Read the POSTGRES_MULTIPLE_DATABASES variable
 if [ -n "${POSTGRES_MULTIPLE_DATABASES:-}" ]; then
     echo "======================================================="
-    echo " Création de plusieurs bases de données"
+    echo " Creating multiple databases"
     echo "======================================================="
 
-    # Sépare par virgule et crée chaque base
+    # Split by comma and create each database
     for db in $(echo "$POSTGRES_MULTIPLE_DATABASES" | tr ',' ' '); do
         create_user_and_database "$db"
     done
 
     echo "======================================================="
-    echo " Toutes les bases ont été créées avec succès !"
+    echo " All databases created successfully!"
     echo "======================================================="
 fi

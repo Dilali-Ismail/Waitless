@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_USER: waitless
       POSTGRES_PASSWORD: waitless123
-      POSTGRES_MULTIPLE_DATABASES: queue_db,ticket_db,keycloak_db
+      POSTGRES_MULTIPLE_DATABASES: queue_db,ticket_db,user_db,keycloak_db
     ports:
       - "5432:5432"
     volumes:
@@ -98,6 +98,9 @@ services:
       context: ../infrastructure/eureka-server/eureka-server
       dockerfile: Dockerfile
     container_name: waitless-eureka
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     ports:
       - "8761:8761"
     networks:
@@ -116,6 +119,9 @@ services:
       context: ../services/queue-service/queue-service
       dockerfile: Dockerfile
     container_name: waitless-queue-service
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/queue_db
       SPRING_DATASOURCE_USERNAME: waitless
@@ -141,38 +147,99 @@ services:
       retries: 5
       start_period: 60s
 
-  # ticket-service:  ← À DÉCOMMENTER une fois le service créé
-  #   build:
-  #     context: ../services/ticket-service/ticket-service
-  #     dockerfile: Dockerfile
-  #   container_name: waitless-ticket-service
-  #   environment:
-  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ticket_db
-  #     SPRING_DATASOURCE_USERNAME: waitless
-  #     SPRING_DATASOURCE_PASSWORD: waitless123
-  #     SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-  #     EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
-  #     QUEUE_SERVICE_URL: http://queue-service:8081
-  #     SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/waitless-realm
-  #   ports:
-  #     - "8082:8082"
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     eureka-server:
-  #       condition: service_healthy
-  #     kafka:
-  #       condition: service_started
-  #     queue-service:
-  #       condition: service_healthy
-  #   networks:
-  #     - waitless-network
-  #   healthcheck:
-  #     test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/actuator/health"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #     start_period: 60s
+  ticket-service:
+    build:
+      context: ../services/ticket-service/ticket-service
+      dockerfile: Dockerfile
+    container_name: waitless-ticket-service
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ticket_db
+      SPRING_DATASOURCE_USERNAME: waitless
+      SPRING_DATASOURCE_PASSWORD: waitless123
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      QUEUE_SERVICE_URL: http://queue-service:8081
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/waitless-realm
+    ports:
+      - "8082:8082"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      queue-service:
+        condition: service_healthy
+    networks:
+      - waitless-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  user-service:
+    build:
+      context: ../services/user-service
+      dockerfile: Dockerfile
+    container_name: waitless-user-service
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/user_db
+      SPRING_DATASOURCE_USERNAME: waitless
+      SPRING_DATASOURCE_PASSWORD: waitless123
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/waitless-realm
+    ports:
+      - "8083:8083"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks:
+      - waitless-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  estimation-service:
+    build:
+      context: ../services/estimation-service/estimation-service
+      dockerfile: Dockerfile
+    container_name: waitless-estimation-service
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      ESTIMATION_DEFAULT_SERVICE_TIME: 3
+    ports:
+      - "8084:8084"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    networks:
+      - waitless-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8084/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
 
 volumes:
   postgres_data:
