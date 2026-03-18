@@ -1,0 +1,39 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: notification-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+app:
+  kafka:
+    topic:
+      ticket-events: ticket-events
+  twilio:
+    account-sid: ${TWILIO_ACCOUNT_SID:AC395cf2ffc0fc24fe602b32b31ea8374b}
+    auth-token: ${TWILIO_AUTH_TOKEN:ab37d48d3f5d908e168032023849b693}
+    phone-number: ${TWILIO_PHONE_NUMBER:+13503535099}
+
+logging:
+  level:
+    com.waitless.notificationservice: DEBUG
+    org.springframework.kafka: INFO

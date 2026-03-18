@@ -1,0 +1,21 @@
+FROM maven:3.9-eclipse-temurin-17 AS build
+
+WORKDIR /app
+
+# Copier pom.xml + sources
+COPY pom.xml .
+COPY src ./src
+
+# Compiler et packager
+RUN mvn clean package -DskipTests -B
+
+# ÉTAPE 2 : RUNTIME
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+# Copier le JAR depuis l'étape build
+COPY --from=build /app/target/*.jar app.jar
+
+EXPOSE 8085
+ENTRYPOINT ["java", "-jar", "app.jar"]
