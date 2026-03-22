@@ -44,10 +44,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          # URL du realm Keycloak ? il va t�l�charger automatiquement la cl� publique
-          # En local : http://localhost:8180/realms/waitless-realm
-          # En Docker : http://keycloak:8080/realms/waitless-realm
-          # issuer-uri: http://keycloak:8080/realms/waitless-realm
+          issuer-uri: http://keycloak:8080/realms/waitless-realm
           jwk-set-uri: http://keycloak:8080/realms/waitless-realm/protocol/openid-connect/certs
 
 # ---- Eureka ----
