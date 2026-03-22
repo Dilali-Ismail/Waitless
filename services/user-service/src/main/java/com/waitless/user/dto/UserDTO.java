@@ -18,6 +18,7 @@ public class UserDTO {
     private String userId;
     private String name;
     private String email;
+    private String phoneNumber;
     private Double score;
     private UserStatus status;
     private LocalDateTime suspensionEndDate;

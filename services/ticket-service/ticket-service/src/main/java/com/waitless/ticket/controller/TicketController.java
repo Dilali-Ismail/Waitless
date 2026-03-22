@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<TicketResponse> createTicket(
             @Valid @RequestBody CreateTicketRequest request)
     {
@@ -37,6 +39,7 @@ public class TicketController {
     }
 
     @PostMapping("/call")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public ResponseEntity<TicketResponse> callNextTicket(
             @Valid @RequestBody CallTicketRequest request) {
 
@@ -49,6 +52,7 @@ public class TicketController {
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT')")
     public ResponseEntity<TicketResponse> updateTicketStatus(
             @PathVariable Long id,
             @Valid @RequestBody UpdateTicketStatusRequest request) {
@@ -82,6 +86,7 @@ public class TicketController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<TicketResponse> cancelTicket(
             @PathVariable Long id) {
 
@@ -95,6 +100,7 @@ public class TicketController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<List<TicketResponse>> getMyTickets(
             @RequestParam String userId) {
 
@@ -108,6 +114,7 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'CLIENT', 'COMPANY_ADMIN')")
     public ResponseEntity<TicketResponse> getTicketById(@PathVariable Long id) {
 
         log.info("📥 GET /api/tickets/{}", id);

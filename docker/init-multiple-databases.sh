@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # =============================================================================
 # init-multiple-databases.sh
 # =============================================================================
@@ -6,7 +6,7 @@
 # (via /docker-entrypoint-initdb.d/).
 #
 # It creates a separate database for each microservice based on:
-#   POSTGRES_MULTIPLE_DATABASES="queue_db,ticket_db,keycloak_db"
+#   POSTGRES_MULTIPLE_DATABASES="queue_db,ticket_db,user_db,keycloak_db"
 # =============================================================================
 
 set -e

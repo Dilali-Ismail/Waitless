@@ -39,7 +39,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8180/realms/waitless-realm
+          issuer-uri: http://keycloak:8080/realms/waitless-realm
+          # jwk-set-uri: http://keycloak:8080/realms/waitless-realm/protocol/openid-connect/certs
 
 eureka:
   client:

@@ -49,7 +49,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://keycloak:8080/realms/waitless-realm
-          # Keycloak valide les JWT tokens
+          # jwk-set-uri: http://keycloak:8080/realms/waitless-realm/protocol/openid-connect/certs
 
 eureka:
   client:

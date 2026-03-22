@@ -2,6 +2,8 @@ package com.waitless.user.entity;
 
 import com.waitless.user.enums.UserStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,8 +26,13 @@ public class User {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
     @Column(nullable = false, unique = true, length = 255)
     private String email;
+
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
 
     @Column(nullable = false)
     @Builder.Default

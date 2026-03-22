@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody CreateUserRequest request) {
 
         UserDTO createdUser = userService.createUser(request);
@@ -32,6 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT', 'AGENT', 'COMPANY_ADMIN')")
     public ResponseEntity<UserDTO> getUserByUserId(@PathVariable("userId") String userId) {
 
         UserDTO user = userService.getUserByUserId(userId);
@@ -40,6 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CLIENT')")
     public ResponseEntity<UserDTO> updateUser(
             @PathVariable("userId") String userId,
             @Valid @RequestBody UpdateUserRequest request) {
@@ -54,6 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId) {
 
         userService.deleteUser(userId);
@@ -62,6 +67,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
 
         List<UserDTO> users = userService.getAllUsers();
@@ -70,6 +76,7 @@ public class UserController {
     }
 
     @GetMapping("/status/{status}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'COMPANY_ADMIN')")
     public ResponseEntity<List<UserDTO>> getUsersByStatus(@PathVariable("status") UserStatus status) {
 
         List<UserDTO> users = userService.getUsersByStatus(status);
@@ -77,6 +84,7 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'COMPANY_ADMIN')")
     public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") String email) {
         log.debug("Fetching user by email: {}", email);
 

@@ -92,6 +92,10 @@ public class UserService {
             user.setEmail(request.getEmail());
         }
 
+        if (request.getPhoneNumber() != null && !request.getPhoneNumber().isBlank()) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+
         User updatedUser = userRepository.save(user);
 
         return userMapper.toDTO(updatedUser);

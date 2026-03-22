@@ -19,4 +19,5 @@ public class UpdateUserRequest {
 
     @Email(message = "Email must be valid")
     private String email;
+    private String phoneNumber;
 }

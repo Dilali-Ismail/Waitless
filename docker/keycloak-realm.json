@@ -1,0 +1,152 @@
+{
+  "id": "waitless-realm",
+  "realm": "waitless-realm",
+  "displayName": "Waitless",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": false,
+  "accessTokenLifespan": 3600,
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMIN",
+        "description": "System administrator"
+      },
+      {
+        "name": "CLIENT",
+        "description": "Regular client/customer"
+      },
+      {
+        "name": "AGENT",
+        "description": "Queue/counter agent"
+      },
+      {
+        "name": "COMPANY_ADMIN",
+        "description": "Company administrator"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "waitless-client",
+      "name": "Waitless Client",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "waitless-secret-99b3-4f2a",
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "defaultClientScopes": [
+        "web-origins",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "protocolMappers": [
+        {
+          "name": "realm-roles-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin_user",
+      "email": "admin@waitless.com",
+      "firstName": "Admin",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin@1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ADMIN",
+        "default-roles-waitless-realm"
+      ]
+    },
+    {
+      "username": "client_user",
+      "email": "client@waitless.com",
+      "firstName": "Client",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Client@1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "CLIENT",
+        "default-roles-waitless-realm"
+      ]
+    },
+    {
+      "username": "agent_user",
+      "email": "agent@waitless.com",
+      "firstName": "Agent",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Agent@1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "AGENT",
+        "default-roles-waitless-realm"
+      ]
+    },
+    {
+      "username": "company_admin",
+      "email": "companyadmin@waitless.com",
+      "firstName": "Company",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "CompanyAdmin@1234",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "COMPANY_ADMIN",
+        "default-roles-waitless-realm"
+      ]
+    }
+  ]
+}
