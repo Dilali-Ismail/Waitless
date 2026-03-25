@@ -1,0 +1,20 @@
+/* Global Styles pour WaitLess */
+
+/* Application de la police Manrope sur les titres */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Glassmorphism light mode */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #E2E8F0;
+}
+
+/* Glassmorphism dark mode */
+.dark .glass {
+  background: rgba(30, 41, 55, 0.7);
+  border-color: #334155;
+}

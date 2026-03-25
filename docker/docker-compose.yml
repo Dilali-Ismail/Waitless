@@ -49,8 +49,7 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak_db
       KC_DB_USERNAME: waitless
       KC_DB_PASSWORD: waitless123
-    # --import-realm : importe keycloak-realm.json au démarrage
-    # Si le realm existe déjà, Keycloak l'ignore (pas d'écrasement)
+
     command: start-dev --import-realm
     volumes:
       - ./keycloak-realm.json:/opt/keycloak/data/import/keycloak-realm.json:ro

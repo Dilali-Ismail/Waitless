@@ -13,7 +13,7 @@ spring:
         - id: queue-service
           uri: lb://queue-service
           predicates:
-            - Path=/api/queues/**
+            - Path=/api/queues/**,/api/companies/**,/api/counters/**
 
         # Route 2 : Ticket Service
         - id: ticket-service
