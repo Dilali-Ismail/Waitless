@@ -5,12 +5,8 @@ import com.waitless.ticket.dto.request.CallTicketRequest;
 import com.waitless.ticket.dto.request.CreateTicketRequest;
 import com.waitless.ticket.dto.request.UpdateTicketStatusRequest;
 import com.waitless.ticket.dto.response.TicketResponse;
-import com.waitless.ticket.entity.Ticket;
 import com.waitless.ticket.service.TicketService;
 import jakarta.validation.Valid;
-import jakarta.validation.executable.ValidateOnExecution;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -111,6 +107,20 @@ public class TicketController {
         log.info(" {} tickets trouvés", tickets.size());
 
         return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping("/queue/{queueId}/waiting")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'COMPANY_ADMIN')")
+    public ResponseEntity<List<TicketResponse>> getWaitingTickets(@PathVariable Long queueId) {
+        List<TicketResponse> tickets = ticketService.getWaitingTicketsByQueue(queueId);
+        return ResponseEntity.ok(tickets);
+    }
+
+    @GetMapping("/queue/{queueId}/served-today/count")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AGENT', 'COMPANY_ADMIN', 'CO_ADMIN')")
+    public ResponseEntity<Long> getServedTodayCount(@PathVariable Long queueId) {
+        long count = ticketService.getServedTodayCountByQueue(queueId);
+        return ResponseEntity.ok(count);
     }
 
     @GetMapping("/{id}")

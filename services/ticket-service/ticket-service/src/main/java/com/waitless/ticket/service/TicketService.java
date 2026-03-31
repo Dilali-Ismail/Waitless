@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -160,6 +161,25 @@ public class TicketService {
         return tickets.stream()
                 .map(ticketMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public List<TicketResponse> getWaitingTicketsByQueue(Long queueId) {
+        return ticketRepository.findWaitingTicketsByQueueId(queueId)
+                .stream()
+                .map(ticketMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public long getServedTodayCountByQueue(Long queueId) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.plusDays(1).atStartOfDay();
+        return ticketRepository.countByQueueIdAndStatusAndCompletedAtBetween(
+                queueId,
+                TicketStatus.COMPLETED,
+                start,
+                end
+        );
     }
 
     public TicketResponse getTicketById(Long ticketId) {

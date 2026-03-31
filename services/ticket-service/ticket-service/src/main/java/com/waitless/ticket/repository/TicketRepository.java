@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
@@ -23,4 +24,11 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "AND t.status = 'WAITING' " +
             "ORDER BY t.position ASC")
     List<Ticket> findWaitingTicketsByQueueId(@Param("queueId") Long queueId);
+
+    long countByQueueIdAndStatusAndCompletedAtBetween(
+            Long queueId,
+            TicketStatus status,
+            LocalDateTime start,
+            LocalDateTime end
+    );
 }
