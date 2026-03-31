@@ -16,13 +16,14 @@ public class UserDTO {
     private Integer ticketsCreated;
     private Integer ticketsServed;
     private Integer ticketsCancelled;
+    private Long companyId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public UserDTO() {
     }
 
-    public UserDTO(String userId, String name, String email, String phoneNumber, Double score, UserStatus status, LocalDateTime suspensionEndDate, Integer ticketsCreated, Integer ticketsServed, Integer ticketsCancelled, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserDTO(String userId, String name, String email, String phoneNumber, Double score, UserStatus status, LocalDateTime suspensionEndDate, Integer ticketsCreated, Integer ticketsServed, Integer ticketsCancelled, Long companyId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -33,6 +34,7 @@ public class UserDTO {
         this.ticketsCreated = ticketsCreated;
         this.ticketsServed = ticketsServed;
         this.ticketsCancelled = ticketsCancelled;
+        this.companyId = companyId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -117,6 +119,14 @@ public class UserDTO {
         this.ticketsCancelled = ticketsCancelled;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -148,6 +158,7 @@ public class UserDTO {
         private Integer ticketsCreated;
         private Integer ticketsServed;
         private Integer ticketsCancelled;
+        private Long companyId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
@@ -201,6 +212,11 @@ public class UserDTO {
             return this;
         }
 
+        public builder companyId(Long companyId) {
+            this.companyId = companyId;
+            return this;
+        }
+
         public builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -212,7 +228,7 @@ public class UserDTO {
         }
 
         public UserDTO build() {
-            return new UserDTO(userId, name, email, phoneNumber, score, status, suspensionEndDate, ticketsCreated, ticketsServed, ticketsCancelled, createdAt, updatedAt);
+            return new UserDTO(userId, name, email, phoneNumber, score, status, suspensionEndDate, ticketsCreated, ticketsServed, ticketsCancelled, companyId, createdAt, updatedAt);
         }
     }
 }

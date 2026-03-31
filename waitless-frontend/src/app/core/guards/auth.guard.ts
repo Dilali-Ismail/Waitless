@@ -16,11 +16,12 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
       }
 
       // Vérification des rôles si définis dans la route
-      const requiredRoles = route.data['roles'] as Array<string>;
+      const requiredRoles = route.data['roles'] as Array<string> | undefined;
       if (requiredRoles && requiredRoles.length > 0) {
         const hasRequiredRole = requiredRoles.some(role => authService.hasRole(role));
         if (!hasRequiredRole) {
-          router.navigate(['/']); // Rediriger vers l'accueil si rôle insuffisant
+          // Rediriger vers la page du rôle courant
+          router.navigateByUrl(authService.getDashboardPath());
           return false;
         }
       }

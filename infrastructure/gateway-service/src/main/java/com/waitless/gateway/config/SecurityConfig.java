@@ -3,6 +3,7 @@ package com.waitless.gateway.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
@@ -22,6 +23,10 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/actuator/health", "/actuator/info").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/companies").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/companies").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/companies/category/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

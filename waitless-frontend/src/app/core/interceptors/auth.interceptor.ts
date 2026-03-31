@@ -18,10 +18,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
+      // Ne pas déconnecter sur un échec de login (401 sur /token)
+      if (error.status === 401 && !req.url.includes('/protocol/openid-connect/token')) {
         authService.logout();
       }
       return throwError(() => error);
-    })
+    }),
   );
 };

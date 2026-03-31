@@ -26,4 +26,6 @@ public class CreateUserRequest {
 
     private String phoneNumber;
 
+    private Long companyId;
+
 }

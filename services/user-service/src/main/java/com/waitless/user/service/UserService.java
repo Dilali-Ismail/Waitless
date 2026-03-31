@@ -114,6 +114,20 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserDTO activateUser(String userId) {
+        log.info("Activating user: userId={}", userId);
+
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+
+        user.setStatus(UserStatus.ACTIVE);
+        user.setSuspensionEndDate(null);
+
+        User saved = userRepository.save(user);
+        log.info("User activated successfully: userId={}", userId);
+        return userMapper.toDTO(saved);
+    }
+
     public void deleteUser(String userId) {
         log.info("Deleting user with userId: {}", userId);
 

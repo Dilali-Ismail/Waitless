@@ -1,11 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap, EMPTY } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BaseService {
   protected http = inject(HttpClient);
-  protected apiUrl = 'http://localhost:8080/api';
+  protected apiUrl = environment.apiUrl;
   
   loading = signal<boolean>(false);
   error = signal<string | null>(null);

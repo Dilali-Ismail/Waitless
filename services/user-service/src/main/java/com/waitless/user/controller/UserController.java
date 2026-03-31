@@ -2,9 +2,12 @@ package com.waitless.user.controller;
 
 
 import com.waitless.user.dto.CreateUserRequest;
+import com.waitless.user.dto.RegisterAgentRequest;
+import com.waitless.user.dto.RegisterClientRequest;
 import com.waitless.user.dto.UpdateUserRequest;
 import com.waitless.user.dto.UserDTO;
 import com.waitless.user.enums.UserStatus;
+import com.waitless.user.service.KeycloakProvisioningService;
 import com.waitless.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final KeycloakProvisioningService keycloakProvisioningService;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -31,6 +35,43 @@ public class UserController {
         UserDTO createdUser = userService.createUser(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    /**
+     * Inscription client (MVP) : provisionne d’abord l’utilisateur dans Keycloak,
+     * puis réutilise UserService.createUser(...) pour écrire en DB.
+     */
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> registerClient(@Valid @RequestBody RegisterClientRequest request) {
+        // Bon practice (cohérence) : userId DB = id Keycloak = "sub" du JWT.
+        String keycloakUserId = keycloakProvisioningService.createClientUser(request);
+
+        CreateUserRequest dbRequest = CreateUserRequest.builder()
+                .userId(keycloakUserId)
+                .name(request.getName())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .build();
+
+        UserDTO created = userService.createUser(dbRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PostMapping("/register-agent")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COMPANY_ADMIN')")
+    public ResponseEntity<UserDTO> registerAgent(@Valid @RequestBody RegisterAgentRequest request) {
+        String keycloakUserId = keycloakProvisioningService.createAgentUser(
+                request.getName(), request.getEmail(), request.getPassword());
+
+        CreateUserRequest dbRequest = CreateUserRequest.builder()
+                .userId(keycloakUserId)
+                .name(request.getName())
+                .email(request.getEmail())
+                .companyId(request.getCompanyId())
+                .build();
+
+        UserDTO created = userService.createUser(dbRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping("/{userId}")
@@ -54,6 +95,14 @@ public class UserController {
 
         log.info("User updated successfully: userId={}", userId);
 
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/{userId}/activate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDTO> activateUser(@PathVariable("userId") String userId) {
+        log.info("Activating user: userId={}", userId);
+        UserDTO updatedUser = userService.activateUser(userId);
         return ResponseEntity.ok(updatedUser);
     }
 

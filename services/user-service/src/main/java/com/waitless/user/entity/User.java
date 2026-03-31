@@ -70,6 +70,9 @@ public class User {
     @Builder.Default
     private Integer suspensionCount = 0;
 
+    @Column(name = "company_id")
+    private Long companyId;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

@@ -1,6 +1,7 @@
 package com.waitless.queueservice.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -30,6 +31,15 @@ public class CompanyDTO {
     @NotBlank(message = "L'email est obligatoire")
     @Email(message = "L'email doit être valide")
     private String email;
+
+    /**
+     * Requis au moment du register company (createCompany) pour créer le compte Keycloak.
+     * Jamais renvoyé dans les réponses JSON.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    private String logoUrl;
 
     private String status;
 

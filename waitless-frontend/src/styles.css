@@ -1,9 +1,19 @@
 /* Global Styles pour WaitLess */
 
-/* Application de la police Manrope sur les titres */
-h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: 'Manrope', sans-serif;
+/* Police principale : Poppins sur tout */
+*, body {
+  font-family: 'Poppins', Arial, sans-serif;
 }
+
+/* Titres : Poppins bold */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* Remplacer black par #111111 partout */
+.text-black { color: #111111 !important; }
+.bg-black   { background-color: #111111 !important; }
+.border-black { border-color: #111111 !important; }
 
 /* Glassmorphism light mode */
 .glass {

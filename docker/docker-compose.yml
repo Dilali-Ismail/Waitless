@@ -122,6 +122,10 @@ services:
       context: ../services/queue-service/queue-service
       dockerfile: Dockerfile
     container_name: waitless-queue-service
+    # Clés AWS : charger depuis docker/.env (gitignored). Ne pas mettre AWS_* vides dans
+    # `environment:` — cela écrase env_file et laisse les clés vides dans le conteneur.
+    env_file:
+      - .env
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -133,6 +137,8 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       # SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8080/realms/waitless-realm
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/waitless-realm/protocol/openid-connect/certs
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET:-waitless-logos}
+      AWS_S3_REGION: ${AWS_S3_REGION:-eu-north-1}
     ports:
       - "8081:8081"
     depends_on:

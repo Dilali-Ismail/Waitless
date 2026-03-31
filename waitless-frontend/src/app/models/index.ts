@@ -9,6 +9,7 @@ export interface User {
   ticketsCreated?: number;
   ticketsServed?: number;
   ticketsCancelled?: number;
+  companyId?: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -20,6 +21,8 @@ export interface Company {
   address?: string;
   phoneNumber?: string;
   email: string;
+  password?: string;
+  logoUrl?: string;  
   status?: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
   createdAt?: string;
   updatedAt?: string;
@@ -76,4 +79,40 @@ export interface Estimation {
   position: number;
   estimatedWaitTime: number;
   message?: string;
+}
+
+export interface RegisterClientRequest {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+}
+
+export interface CreateQueueRequest {
+  name: string;
+  description?: string;
+  capacity: number;
+  averageServiceTime: number;
+  companyId: number;
+  openingTime?: string;
+  closingTime?: string;
+}
+
+export interface CreateCounterRequest {
+  counterNumber: number;
+  queueId: number;
+}
+
+export interface RegisterAgentRequest {
+  name: string;
+  email: string;
+  password: string;
+  companyId?: number;
+}
+
+export interface CompanyViewData {
+  company: Company | null;
+  queues: Queue[];
+  missingCompany: boolean;
+  loadFailed: boolean;
 }

@@ -3,6 +3,11 @@ server:
   # Pourquoi 8081 ? Convention (8080 = Gateway, 8081+ = microservices)
 
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 12MB
   application:
     name: queue-service
     # CRUCIAL : Ce nom sera utilisé dans Eureka et pour le routage
@@ -62,6 +67,12 @@ eureka:
     # Utilise l'IP plutôt que le hostname (mieux pour Docker)
 
 waitless:
+  keycloak:
+    base-url: http://keycloak:8080
+    realm: waitless-realm
+    admin:
+      username: admin
+      password: admin
   errors:
     include-stacktrace: true
 
@@ -84,3 +95,11 @@ management:
   endpoint:
     health:
       show-details: always
+# Région = code AWS uniquement (ex: eu-north-1, eu-west-3), pas le nom affiché dans la console.
+# Ne commitez jamais de vraies clés : passez-les par variables d'environnement (Docker / IDE).
+aws:
+  s3:
+    bucket: ${AWS_S3_BUCKET:waitless-logos}
+    region: ${AWS_S3_REGION:eu-north-1}
+    access-key: ${AWS_ACCESS_KEY_ID:}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
-import { Estimation } from '../models';
+import { Estimation } from '../../models';
 import { BaseService } from './base.service';
 
 @Injectable({ providedIn: 'root' })

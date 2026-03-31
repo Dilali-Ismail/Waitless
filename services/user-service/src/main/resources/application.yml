@@ -42,6 +42,14 @@ spring:
           issuer-uri: http://keycloak:8080/realms/waitless-realm
           # jwk-set-uri: http://keycloak:8080/realms/waitless-realm/protocol/openid-connect/certs
 
+waitless:
+  keycloak:
+    base-url: http://keycloak:8080
+    realm: waitless-realm
+    admin:
+      username: ${KEYCLOAK_ADMIN:admin}
+      password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
+
 eureka:
   client:
     service-url:

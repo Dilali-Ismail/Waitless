@@ -5,6 +5,7 @@ import com.waitless.queueservice.config.TestSecurityConfig;
 import com.waitless.queueservice.dto.CompanyDTO;
 import com.waitless.queueservice.exception.BusinessException;
 import com.waitless.queueservice.exception.ResourceNotFoundException;
+import com.waitless.queueservice.service.S3Service;
 import com.waitless.queueservice.service.company.CompanyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,9 @@ class CompanyControllerTest {
     private CompanyService companyService;
 
     @MockBean
+    private S3Service s3Service;
+
+    @MockBean
     private io.micrometer.tracing.Tracer tracer;
 
     private CompanyDTO companyDTO;
@@ -49,6 +53,8 @@ class CompanyControllerTest {
                 .name("Test Company")
                 .email("test@company.com")
                 .category("Restaurant")
+                .phoneNumber("0612345678")
+                .password("secret12")
                 .build();
     }
 
@@ -83,12 +89,14 @@ class CompanyControllerTest {
 
     @Test
     @WithMockUser(roles = "CLIENT")
-    void createCompany_Forbidden_Returns403() throws Exception {
+    void createCompany_AuthenticatedClient_Json_Returns201() throws Exception {
+        when(companyService.createCompany(any(CompanyDTO.class))).thenReturn(companyDTO);
+
         mockMvc.perform(post("/api/companies")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(companyDTO)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isCreated());
     }
 
     // ── GET ALL ────────────────────────────────────────────────────────────────

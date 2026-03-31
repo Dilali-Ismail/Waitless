@@ -7,6 +7,7 @@ import com.waitless.queueservice.exception.BusinessException;
 import com.waitless.queueservice.exception.ResourceNotFoundException;
 import com.waitless.queueservice.mapper.CompanyMapper;
 import com.waitless.queueservice.repository.CompanyRepository;
+import com.waitless.queueservice.service.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +28,8 @@ public class CompanyServiceTest {
 
     @Mock private CompanyRepository companyRepository;
     @Mock private CompanyMapper companyMapper;
+    @Mock private KeycloakCompanyProvisioningService keycloakCompanyProvisioningService;
+    @Mock private S3Service s3Service;
     @InjectMocks private CompanyServiceImpl companyService;
 
     private Company company;
@@ -34,6 +37,9 @@ public class CompanyServiceTest {
 
     @BeforeEach
     void setUp() {
+        lenient().when(s3Service.resolveLogoUrlForClient(any())).thenAnswer(inv -> inv.getArgument(0));
+        lenient().doNothing().when(keycloakCompanyProvisioningService).createCompanyAdminAccount(any());
+
         company = new Company();
         company.setId(1L);
         company.setName("Test Company");
@@ -44,6 +50,7 @@ public class CompanyServiceTest {
         companyDTO.setId(1L);
         companyDTO.setName("Test Company");
         companyDTO.setEmail("test@test.com");
+        companyDTO.setPassword("secret12");
     }
 
     // ── CREATE ─────────────────────────────────────────────────────────────────

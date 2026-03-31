@@ -1,0 +1,88 @@
+<div class="mx-auto max-w-6xl px-4 py-10 md:px-6">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">Companies</h1>
+      <p class="mt-1 text-sm text-text-secondary">Liste des entreprises (admin).</p>
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex items-center justify-center rounded-2xl border border-border bg-surface px-4 py-2 text-sm font-semibold text-text-main transition hover:border-primary hover:text-primary dark:border-border-dark dark:bg-surface-dark dark:text-text-light"
+      (click)="refresh()"
+    >
+      Refresh
+    </button>
+  </div>
+
+  @if (companyService.error(); as err) {
+    <div class="mt-6 rounded-2xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger" role="alert">
+      {{ err }}
+    </div>
+  }
+
+  @if (companyService.loading()) {
+    <div class="mt-6 rounded-2xl border border-border bg-bg-light/60 px-4 py-6 text-sm text-text-secondary dark:border-border-dark dark:bg-bg-dark/30">
+      Chargement…
+    </div>
+  }
+
+  <div class="mt-6 overflow-hidden rounded-3xl border border-border bg-surface/90 dark:border-border-dark dark:bg-surface-dark/90">
+    <div class="grid grid-cols-12 gap-3 border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wide text-text-secondary dark:border-border-dark">
+      <div class="col-span-4">Nom</div>
+      <div class="col-span-3">Catégorie</div>
+      <div class="col-span-2">Email</div>
+      <div class="col-span-1 text-right">Statut</div>
+      <div class="col-span-2 text-right">Actions</div>
+    </div>
+
+    @if (companies$ | async; as companies) {
+      @if (companies.length === 0) {
+        <div class="px-4 py-6 text-sm text-text-secondary">Aucune entreprise.</div>
+      } @else {
+        @for (c of companies; track c.id) {
+          <div class="grid grid-cols-12 gap-3 px-4 py-4 text-sm text-text-main dark:text-text-light border-b border-border/60 last:border-b-0 dark:border-border-dark/60">
+            <div class="col-span-4">
+              <p class="font-semibold">{{ c.name }}</p>
+              @if (c.address) {
+                <p class="mt-0.5 text-xs text-text-secondary">{{ c.address }}</p>
+              }
+            </div>
+            <div class="col-span-3 text-text-secondary">{{ c.category }}</div>
+            <div class="col-span-2 text-text-secondary">{{ c.email }}</div>
+            <div class="col-span-1 text-right">
+              <span
+                class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold"
+                [class.border-warning]="c.status === 'PENDING'"
+                [class.text-warning]="c.status === 'PENDING'"
+                [class.border-success]="c.status === 'ACTIVE'"
+                [class.text-success]="c.status === 'ACTIVE'"
+                [class.border-danger]="c.status === 'SUSPENDED'"
+                [class.text-danger]="c.status === 'SUSPENDED'"
+              >
+                {{ c.status ?? '—' }}
+              </span>
+            </div>
+            <div class="col-span-2 flex justify-end gap-2">
+              <button
+                type="button"
+                class="rounded-xl border border-success/40 bg-success/10 px-2.5 py-1 text-xs font-semibold text-success transition hover:bg-success/15 disabled:opacity-50"
+                [disabled]="actingId() === c.id || c.status === 'ACTIVE'"
+                (click)="activate(c.id)"
+              >
+                Activer
+              </button>
+              <button
+                type="button"
+                class="rounded-xl border border-danger/40 bg-danger/10 px-2.5 py-1 text-xs font-semibold text-danger transition hover:bg-danger/15 disabled:opacity-50"
+                [disabled]="actingId() === c.id || c.status === 'SUSPENDED'"
+                (click)="suspend(c.id)"
+              >
+                Suspendre
+              </button>
+            </div>
+          </div>
+        }
+      }
+    }
+  </div>
+</div>

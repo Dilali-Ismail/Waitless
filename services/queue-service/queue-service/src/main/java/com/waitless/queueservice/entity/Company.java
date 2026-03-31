@@ -39,6 +39,9 @@ public class Company {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "logo_url")
+    private String logoUrl;
+
     @Column(nullable = false)
     @Builder.Default
     @Enumerated(EnumType.STRING)
