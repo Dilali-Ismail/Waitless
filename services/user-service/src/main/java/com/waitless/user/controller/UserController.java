@@ -37,13 +37,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
-    /**
-     * Inscription client (MVP) : provisionne d’abord l’utilisateur dans Keycloak,
-     * puis réutilise UserService.createUser(...) pour écrire en DB.
-     */
+
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerClient(@Valid @RequestBody RegisterClientRequest request) {
-        // Bon practice (cohérence) : userId DB = id Keycloak = "sub" du JWT.
+
         String keycloakUserId = keycloakProvisioningService.createClientUser(request);
 
         CreateUserRequest dbRequest = CreateUserRequest.builder()

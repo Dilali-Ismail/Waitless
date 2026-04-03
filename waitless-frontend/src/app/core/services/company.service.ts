@@ -7,10 +7,7 @@ import { BaseService } from './base.service';
 export class CompanyService extends BaseService {
 
 
-  /**
-   * Toujours multipart/form-data pour que le backend appelle le bon handler
-   * et traite le logo (part "company" en JSON + "logo" optionnel).
-   */
+  
   registerCompany(request: Company, logo?: File): Observable<Company> {
     this.loading.set(true);
     this.error.set(null);
