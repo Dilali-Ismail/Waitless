@@ -1,0 +1,224 @@
+<div class="mx-auto max-w-6xl px-4 py-10 md:px-6">
+  @if (vm$ | async; as vm) {
+    @if (vm.loadFailed) {
+      <div
+        class="rounded-3xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
+        role="alert"
+      >
+        Impossible de charger les files. Réessayez plus tard.
+      </div>
+    } @else if (vm.missingCompany) {
+      <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">Files d’attente</h1>
+      <p class="mt-2 text-sm text-text-secondary">
+        Aucune entreprise ne correspond à votre compte. Vérifiez l’email utilisé à la connexion.
+      </p>
+    } @else {
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">
+            Files d’attente
+          </h1>
+          <p class="text-sm text-text-secondary">{{ vm.company?.name }}</p>
+        </div>
+        <a
+          routerLink="/company/dashboard"
+          class="text-sm font-semibold text-primary hover:underline"
+          >← Retour au tableau de bord</a
+        >
+      </div>
+
+      @if (vm.company?.status === 'PENDING') {
+        <div
+          class="mt-6 rounded-3xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-text-main dark:text-text-light"
+          role="status"
+        >
+          Tant que l’entreprise est <strong>PENDING</strong>, le backend refuse la création de files
+          (entreprise non active). Activez le compte côté administrateur.
+        </div>
+      }
+
+      @if (queueService.error(); as err) {
+        <div
+          class="mt-4 rounded-3xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
+          role="alert"
+        >
+          {{ err }}
+        </div>
+      }
+
+      <div
+        class="mt-8 rounded-3xl border border-border bg-surface/90 p-6 dark:border-border-dark dark:bg-surface-dark/90"
+      >
+        <h2 class="font-heading text-lg font-semibold text-text-main dark:text-text-light">
+          @if (editingQueueId() !== null) {
+            Modifier une file
+          } @else {
+            Nouvelle file
+          }
+        </h2>
+        <form
+          class="mt-4 grid gap-4 sm:grid-cols-2"
+          [formGroup]="queueForm"
+          (ngSubmit)="submitQueue(vm.company!.id!)"
+        >
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="q-name"
+              >Nom</label
+            >
+            <input
+              id="q-name"
+              type="text"
+              formControlName="name"
+              class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+            />
+            @if (queueForm.controls.name.touched && queueForm.controls.name.errors?.['required']) {
+              <p class="mt-1 text-xs text-danger">Nom requis.</p>
+            }
+          </div>
+          <div class="sm:col-span-2">
+            <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="q-desc"
+              >Description (optionnel)</label
+            >
+            <input
+              id="q-desc"
+              type="text"
+              formControlName="description"
+              class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+            />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="q-cap"
+              >Capacité (10–500)</label
+            >
+            <input
+              id="q-cap"
+              type="number"
+              formControlName="capacity"
+              class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+            />
+          </div>
+          <div>
+            <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="q-svc"
+              >Temps de service moyen (min, 1–60)</label
+            >
+            <input
+              id="q-svc"
+              type="number"
+              formControlName="averageServiceTime"
+              class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+            />
+          </div>
+          <div class="flex flex-wrap gap-3 sm:col-span-2">
+            <button
+              type="submit"
+              class="rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/25 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+              [disabled]="
+                queueService.loading() || vm.company?.status === 'PENDING' || vm.company?.id == null
+              "
+            >
+              @if (editingQueueId() !== null) {
+                Enregistrer
+              } @else {
+                Créer la file
+              }
+            </button>
+            @if (editingQueueId() !== null) {
+              <button
+                type="button"
+                class="rounded-2xl border border-border px-4 py-2.5 text-sm font-semibold text-text-main dark:border-border-dark dark:text-text-light"
+                (click)="cancelEdit()"
+              >
+                Annuler
+              </button>
+            }
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="mt-8 overflow-hidden rounded-3xl border border-border bg-surface/90 dark:border-border-dark dark:bg-surface-dark/90"
+      >
+        <table class="min-w-full text-left text-sm">
+          <thead
+            class="border-b border-border bg-bg-light/50 text-xs uppercase text-text-secondary dark:border-border-dark dark:bg-bg-dark/40"
+          >
+            <tr>
+              <th class="px-4 py-3 font-medium">Nom</th>
+              <th class="px-4 py-3 font-medium">Statut</th>
+              <th class="px-4 py-3 font-medium">Capacité</th>
+              <th class="px-4 py-3 font-medium">Service (min)</th>
+              <th class="px-4 py-3 font-medium text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (q of vm.queues; track q.id) {
+              <tr class="border-b border-border last:border-0 dark:border-border-dark">
+                <td class="px-4 py-3 font-medium text-text-main dark:text-text-light">{{ q.name }}</td>
+                <td class="px-4 py-3">
+                  @if (q.isActive) {
+                    <span
+                      class="inline-flex rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-semibold text-success"
+                      >Ouverte</span
+                    >
+                  } @else {
+                    <span
+                      class="inline-flex rounded-full bg-text-secondary/15 px-2.5 py-0.5 text-xs font-semibold text-text-secondary"
+                      >Fermée</span
+                    >
+                  }
+                </td>
+                <td class="px-4 py-3 text-text-secondary">{{ q.capacity }}</td>
+                <td class="px-4 py-3 text-text-secondary">{{ q.averageServiceTime }}</td>
+                <td class="px-4 py-3 text-right">
+                  <div class="flex flex-wrap justify-end gap-2">
+                    @if (q.isActive) {
+                      <button
+                        type="button"
+                        class="rounded-xl border border-border px-2 py-1 text-xs font-semibold text-text-main dark:border-border-dark dark:text-text-light"
+                        [disabled]="queueService.loading()"
+                        (click)="closeQueue(q.id!)"
+                      >
+                        Fermer
+                      </button>
+                    } @else {
+                      <button
+                        type="button"
+                        class="rounded-xl border border-border px-2 py-1 text-xs font-semibold text-text-main dark:border-border-dark dark:text-text-light"
+                        [disabled]="queueService.loading()"
+                        (click)="openQueue(q.id!)"
+                      >
+                        Ouvrir
+                      </button>
+                    }
+                    <button
+                      type="button"
+                      class="rounded-xl border border-primary/40 px-2 py-1 text-xs font-semibold text-primary"
+                      [disabled]="queueService.loading()"
+                      (click)="startEdit(q)"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      class="rounded-xl border border-danger/40 px-2 py-1 text-xs font-semibold text-danger"
+                      [disabled]="queueService.loading()"
+                      (click)="deleteQueue(q)"
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="px-4 py-8 text-center text-sm text-text-secondary">
+                  Aucune file. Créez-en une avec le formulaire ci-dessus.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

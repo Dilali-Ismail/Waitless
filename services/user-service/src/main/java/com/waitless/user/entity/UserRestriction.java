@@ -1,0 +1,48 @@
+package com.waitless.user.entity;
+
+import com.waitless.user.enums.RestrictionType;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "user_restrictions")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserRestriction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "user_id", nullable = false, length = 36)
+    private String userId;
+
+    @Column(name = "restriction_type", nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    private RestrictionType restrictionType;
+
+    @Column(name = "reason", nullable = false, length = 500)
+    private String reason;
+
+    @Column(name = "ticket_id")
+    private Long ticketId;
+
+    @Column(name = "applied_at", nullable = false)
+    private LocalDateTime appliedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.appliedAt = LocalDateTime.now();
+    }
+
+}
+
+
+

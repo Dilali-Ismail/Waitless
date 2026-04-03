@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WaitLess</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  
+  <!-- Google Fonts: Poppins & Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4100FA',
+            secondary: '#10B981',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+            surface: '#FFFFFF',
+            'surface-dark': '#1E2937',
+            'bg-light': '#F8FAFC',
+            'bg-dark': '#111111',
+            'text-main': '#111111',
+            'text-secondary': '#64748B',
+            'text-light': '#F1F5F9',
+            border: '#E2E8F0',
+            'border-dark': '#334155'
+          },
+          fontFamily: {
+            sans: ['Poppins', 'Arial', 'sans-serif'],
+            heading: ['Poppins', 'Arial', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-bg-light text-text-main font-sans antialiased dark:bg-bg-dark dark:text-text-light transition-colors duration-200">
+  <app-root></app-root>
+</body>
+</html>

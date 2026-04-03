@@ -1,0 +1,14 @@
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    api-gateway-url: http://localhost:8080
+
+spring:
+  cloud:
+    discovery:
+      enabled: false
+    loadbalancer:
+      enabled: false

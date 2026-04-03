@@ -1,0 +1,146 @@
+<div class="mx-auto max-w-6xl px-4 py-10 md:px-6">
+  @if (vm$ | async; as vm) {
+    @if (vm.loadFailed) {
+      <div
+        class="rounded-3xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
+        role="alert"
+      >
+        Impossible de charger le tableau de bord. Réessayez plus tard.
+      </div>
+    } @else if (vm.missingCompany) {
+      <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">
+        Entreprise introuvable
+      </h1>
+      <p class="mt-2 text-sm text-text-secondary">
+        Aucune fiche entreprise ne correspond à l’email de votre compte. Utilisez le même email que lors
+        de l’inscription entreprise, ou contactez un administrateur.
+      </p>
+    } @else {
+      <div class="flex flex-col gap-2">
+        <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">
+          Tableau de bord — {{ vm.company?.name ?? 'Mon entreprise' }}
+        </h1>
+        <p class="text-sm text-text-secondary">Vue d’ensemble de vos files d’attente.</p>
+      </div>
+
+      @if (vm.company?.status === 'PENDING') {
+        <div
+          class="mt-6 rounded-3xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-text-main dark:text-text-light"
+          role="status"
+        >
+          Votre compte est <strong>en attente de validation</strong> par un administrateur. Certaines
+          actions peuvent être limitées jusqu’à activation.
+        </div>
+      }
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          class="rounded-3xl border border-border bg-surface/90 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] dark:border-border-dark dark:bg-surface-dark/90"
+        >
+          <p class="text-xs font-medium text-text-secondary">Files</p>
+          <p class="mt-2 text-2xl font-bold text-text-main dark:text-text-light">{{ vm.queues.length }}</p>
+          <p class="mt-1 text-xs text-text-secondary">Total configurées</p>
+        </div>
+        <div
+          class="rounded-3xl border border-border bg-surface/90 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] dark:border-border-dark dark:bg-surface-dark/90"
+        >
+          <p class="text-xs font-medium text-text-secondary">Files ouvertes</p>
+          <p class="mt-2 text-2xl font-bold text-text-main dark:text-text-light">
+            {{ openQueuesCount(vm.queues) }}
+          </p>
+          <p class="mt-1 text-xs text-text-secondary">Statut « actif »</p>
+        </div>
+        <div
+          class="rounded-3xl border border-border bg-surface/90 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.06)] dark:border-border-dark dark:bg-surface-dark/90"
+        >
+          <p class="text-xs font-medium text-text-secondary">Temps de service moyen</p>
+          <p class="mt-2 text-2xl font-bold text-text-main dark:text-text-light">
+            {{ formatAvgServiceMinutes(vm.queues) }}
+          </p>
+          <p class="mt-1 text-xs text-text-secondary">Moyenne des réglages sur vos files</p>
+        </div>
+        <div
+          class="rounded-3xl border border-border bg-bg-light/60 p-5 dark:border-border-dark dark:bg-bg-dark/30"
+        >
+          <p class="text-xs font-medium text-text-secondary">Clients en attente</p>
+          <p class="mt-2 text-2xl font-bold text-text-main dark:text-text-light">{{ vm.waitingClients }}</p>
+          <p class="mt-1 text-xs text-text-secondary">Total WAITING sur toutes vos files</p>
+        </div>
+      </div>
+
+      <div class="mt-4 grid gap-4 lg:grid-cols-3">
+        <div
+          class="rounded-3xl border border-border bg-bg-light/60 p-5 lg:col-span-1 dark:border-border-dark dark:bg-bg-dark/30"
+        >
+          <p class="text-xs font-medium text-text-secondary">Tickets servis aujourd’hui</p>
+          <p class="mt-2 text-2xl font-bold text-text-main dark:text-text-light">{{ vm.servedToday }}</p>
+          <p class="mt-1 text-xs text-text-secondary">Tickets COMPLETED du jour</p>
+        </div>
+        <div
+          class="rounded-3xl border border-dashed border-border bg-surface/50 p-5 lg:col-span-2 dark:border-border-dark dark:bg-surface-dark/40"
+        >
+          <p class="text-sm font-semibold text-text-main dark:text-text-light">Flux des tickets</p>
+          <p class="mt-2 text-sm text-text-secondary">
+            Derniers appels / terminés / absents : cette zone sera alimentée quand l’API exposera l’historique
+            par entreprise ou par file.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center justify-between gap-3">
+        <h2 class="font-heading text-lg font-semibold text-text-main dark:text-text-light">
+          Files d’attente
+        </h2>
+        <a
+          routerLink="/company/queues"
+          class="inline-flex items-center justify-center rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-primary/25 transition hover:brightness-105"
+        >
+          Nouvelle file / Gestion
+        </a>
+      </div>
+
+      <div
+        class="mt-4 overflow-hidden rounded-3xl border border-border bg-surface/90 dark:border-border-dark dark:bg-surface-dark/90"
+      >
+        <table class="min-w-full text-left text-sm">
+          <thead class="border-b border-border bg-bg-light/50 text-xs uppercase text-text-secondary dark:border-border-dark dark:bg-bg-dark/40">
+            <tr>
+              <th class="px-4 py-3 font-medium">Nom</th>
+              <th class="px-4 py-3 font-medium">Statut</th>
+              <th class="px-4 py-3 font-medium">Capacité</th>
+              <th class="px-4 py-3 font-medium">Service (min)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (q of vm.queues; track q.id) {
+              <tr class="border-b border-border last:border-0 dark:border-border-dark">
+                <td class="px-4 py-3 font-medium text-text-main dark:text-text-light">{{ q.name }}</td>
+                <td class="px-4 py-3">
+                  @if (q.isActive) {
+                    <span
+                      class="inline-flex rounded-full bg-success/15 px-2.5 py-0.5 text-xs font-semibold text-success"
+                      >Ouverte</span
+                    >
+                  } @else {
+                    <span
+                      class="inline-flex rounded-full bg-text-secondary/15 px-2.5 py-0.5 text-xs font-semibold text-text-secondary"
+                      >Fermée</span
+                    >
+                  }
+                </td>
+                <td class="px-4 py-3 text-text-secondary">{{ q.capacity }}</td>
+                <td class="px-4 py-3 text-text-secondary">{{ q.averageServiceTime }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-sm text-text-secondary">
+                  Aucune file pour le moment. Créez-en une depuis « Nouvelle file / Gestion ».
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

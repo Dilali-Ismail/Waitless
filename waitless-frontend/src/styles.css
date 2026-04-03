@@ -1,0 +1,30 @@
+/* Global Styles pour WaitLess */
+
+/* Police principale : Poppins sur tout */
+*, body {
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* Titres : Poppins bold */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* Remplacer black par #111111 partout */
+.text-black { color: #111111 !important; }
+.bg-black   { background-color: #111111 !important; }
+.border-black { border-color: #111111 !important; }
+
+/* Glassmorphism light mode */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #E2E8F0;
+}
+
+/* Glassmorphism dark mode */
+.dark .glass {
+  background: rgba(30, 41, 55, 0.7);
+  border-color: #334155;
+}

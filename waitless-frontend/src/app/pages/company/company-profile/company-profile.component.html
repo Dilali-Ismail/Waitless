@@ -1,0 +1,126 @@
+<div class="mx-auto max-w-xl px-4 py-10 md:px-6">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">Profil entreprise</h1>
+      <p class="text-sm text-text-secondary">Modifiez les informations de votre entreprise.</p>
+    </div>
+    <a routerLink="/company/dashboard" class="text-sm font-semibold text-primary hover:underline">
+      ← Retour
+    </a>
+  </div>
+
+  @if (company$ | async; as company) {
+    @if (companyService.error(); as err) {
+      <div class="mt-4 rounded-3xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger" role="alert">
+        {{ err }}
+      </div>
+    }
+
+    @if (successMessage(); as msg) {
+      <div class="mt-4 rounded-3xl border border-success/30 bg-success/10 px-4 py-3 text-sm text-success" role="status">
+        {{ msg }}
+      </div>
+    }
+
+    <div class="mt-4 rounded-2xl border border-border bg-bg-light/60 px-4 py-2 text-xs text-text-secondary dark:border-border-dark dark:bg-bg-dark/30">
+      Statut :
+      @if (company.status === 'ACTIVE') {
+        <span class="font-semibold text-success">Actif</span>
+      } @else if (company.status === 'PENDING') {
+        <span class="font-semibold text-warning">En attente</span>
+      } @else {
+        <span class="font-semibold text-danger">Suspendu</span>
+      }
+    </div>
+
+    <div class="mt-6 rounded-3xl border border-border bg-surface/90 p-6 dark:border-border-dark dark:bg-surface-dark/90">
+      <form class="flex flex-col gap-4" [formGroup]="profileForm" (ngSubmit)="submit()">
+        <div>
+          <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="p-name">
+            Nom de l'entreprise
+          </label>
+          <input
+            id="p-name"
+            type="text"
+            formControlName="name"
+            class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+          />
+          @if (profileForm.controls.name.touched && profileForm.controls.name.errors?.['required']) {
+            <p class="mt-1 text-xs text-danger">Nom requis.</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="p-cat">
+            Catégorie
+          </label>
+          <input
+            id="p-cat"
+            type="text"
+            formControlName="category"
+            class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="p-phone">
+            Téléphone
+          </label>
+          <input
+            id="p-phone"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="0612345678"
+            class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+          />
+          @if (profileForm.controls.phoneNumber.touched && profileForm.controls.phoneNumber.errors?.['pattern']) {
+            <p class="mt-1 text-xs text-danger">Numéro invalide (10 chiffres).</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="p-email">
+            Email (non modifiable)
+          </label>
+          <input
+            id="p-email"
+            type="email"
+            formControlName="email"
+            class="w-full rounded-2xl border border-border bg-bg-light/50 px-4 py-3 text-text-secondary outline-none dark:border-border-dark dark:bg-bg-dark/50 dark:text-text-light/60"
+          />
+          <p class="mt-1 text-xs text-text-secondary">
+            L'email est lié à votre compte Keycloak et ne peut pas être changé ici.
+          </p>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm font-medium text-text-main dark:text-text-light" for="p-addr">
+            Adresse (optionnel)
+          </label>
+          <input
+            id="p-addr"
+            type="text"
+            formControlName="address"
+            class="w-full rounded-2xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="mt-2 flex w-full items-center justify-center rounded-2xl bg-primary py-3 text-sm font-semibold text-white shadow-md shadow-primary/25 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+          [disabled]="saving() || companyService.loading()"
+        >
+          @if (saving() || companyService.loading()) {
+            Enregistrement…
+          } @else {
+            Enregistrer les modifications
+          }
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="mt-8 text-sm text-text-secondary">
+      Aucune entreprise trouvée pour votre compte. Vérifiez l'email utilisé à la connexion.
+    </div>
+  }
+</div>

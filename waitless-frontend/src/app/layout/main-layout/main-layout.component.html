@@ -1,0 +1,9 @@
+<div class="app-shell">
+  <app-header />
+  <main class="main-area">
+    <router-outlet />
+  </main>
+  @if (footerVisible()) {
+    <app-footer />
+  }
+</div>

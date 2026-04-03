@@ -1,0 +1,72 @@
+<div class="mx-auto flex min-h-[72vh] max-w-md flex-col justify-center px-4 py-10">
+  <div class="rounded-3xl border border-border bg-surface p-8 shadow-[0_20px_60px_rgba(15,23,42,0.1)] dark:border-border-dark dark:bg-surface-dark">
+    <h1 class="font-heading text-2xl font-bold text-text-main dark:text-text-light">Connexion</h1>
+    <p class="mb-6 mt-1 text-sm text-text-secondary">Accède à ton espace WaitLess.</p>
+
+    @if (errorMessage(); as err) {
+      <div
+        class="mt-4 rounded-2xl border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
+        role="alert"
+      >
+        {{ err }}
+      </div>
+    }
+
+    <form class="mt-2 flex flex-col gap-4" (ngSubmit)="submit()" [formGroup]="form">
+      <div>
+        <label for="login-id" class="mb-1 block text-sm font-medium text-text-main dark:text-text-light"
+          >Identifiant</label
+        >
+        <input
+          id="login-id"
+          type="text"
+          formControlName="identifier"
+          autocomplete="username"
+          class="w-full rounded-xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none ring-primary/0 transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+        />
+        @if (form.controls.identifier.touched && form.controls.identifier.errors?.['required']) {
+          <p class="mt-1 text-xs text-danger">Identifiant requis.</p>
+        }
+        @if (form.controls.identifier.touched && form.controls.identifier.errors?.['minlength']) {
+          <p class="mt-1 text-xs text-danger">Au moins 3 caractères.</p>
+        }
+      </div>
+
+      <div>
+        <label for="login-password" class="mb-1 block text-sm font-medium text-text-main dark:text-text-light"
+          >Mot de passe</label
+        >
+        <input
+          id="login-password"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          class="w-full rounded-xl border border-border bg-bg-light px-4 py-3 text-text-main outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-border-dark dark:bg-bg-dark dark:text-text-light"
+        />
+        @if (form.controls.password.touched && form.controls.password.errors?.['required']) {
+          <p class="mt-1 text-xs text-danger">Mot de passe requis.</p>
+        }
+        @if (form.controls.password.touched && form.controls.password.errors?.['minlength']) {
+          <p class="mt-1 text-xs text-danger">Au moins 6 caractères.</p>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="mt-2 flex w-full items-center justify-center rounded-xl bg-primary py-3 text-sm font-semibold text-white shadow-md shadow-primary/25 transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
+        [disabled]="submitting()"
+      >
+        @if (submitting()) {
+          Connexion…
+        } @else {
+          Se connecter
+        }
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-text-secondary">
+      Pas encore de compte ?
+      <a routerLink="/register" class="font-semibold text-primary hover:underline">S’inscrire</a>
+    </p>
+  </div>
+</div>

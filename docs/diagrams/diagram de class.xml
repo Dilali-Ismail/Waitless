@@ -1,0 +1,385 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="WaitLess-Class-Diagram-v2" name="WaitLess — Diagramme de Classes Complet">
+    <mxGraphModel dx="3000" dy="2200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3500" pageHeight="2800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ==================== TITRE ==================== -->
+        <mxCell id="title" value="WaitLess — Diagramme de Classes Complet" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="18" width="2200" height="42" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== LÉGENDE ==================== -->
+        <mxCell id="leg-title" value="LÉGENDE" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=13" vertex="1" parent="1">
+          <mxGeometry x="40" y="68" width="170" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-q" value="Queue Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="102" width="162" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-t" value="Ticket Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="134" width="162" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-u" value="User Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="166" width="162" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-e" value="Estimation Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="198" width="162" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-n" value="Notification Service" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="230" width="162" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-k" value="Keycloak (externe)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="262" width="162" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-rel-title" value="RELATIONS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="170" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-comp-lbl" value="Composition (1-N)" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="68" y="332" width="144" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-comp-ln" style="startArrow=diamondThin;startFill=1;endArrow=open;endFill=0;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="343" as="sourcePoint" />
+            <mxPoint x="66" y="343" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-cs-lbl" value="Ref. cross-service" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="68" y="362" width="144" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-cs-ln" style="endArrow=open;endFill=0;dashed=1;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="373" as="sourcePoint" />
+            <mxPoint x="66" y="373" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-assoc-lbl" value="Association" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="68" y="392" width="144" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-assoc-ln" style="endArrow=open;endFill=0;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="403" as="sourcePoint" />
+            <mxPoint x="66" y="403" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-dep-lbl" value="Dépendance / enum" style="text;html=1;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="68" y="422" width="144" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="leg-dep-ln" style="endArrow=open;endFill=0;dashed=1;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="433" as="sourcePoint" />
+            <mxPoint x="66" y="433" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== KEYCLOAK (externe) ==================== -->
+        <mxCell id="Keycloak" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;external&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;Keycloak User&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : String (UUID)&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- username : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- email : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- roles : List&amp;lt;String&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- enabled : Boolean&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;i&gt;Géré par Keycloak IAM&lt;/i&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1620" y="68" width="240" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== QUEUE SERVICE ==================== -->
+        <mxCell id="qs-bg" value="QUEUE SERVICE" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="388" width="1060" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- Company -->
+        <mxCell id="Company" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Company&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- name : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- category : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- address : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- phoneNumber : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- email : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- logoUrl : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- status : CompanyStatus&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queues : List&amp;lt;Queue&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- updatedAt : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="200" y="448" width="262" height="295" as="geometry" />
+        </mxCell>
+
+        <!-- Queue -->
+        <mxCell id="Queue" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Queue&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- name : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- description : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- capacity : Integer = 50&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- averageServiceTime : Integer = 5&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- isActive : Boolean = true&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- openingTime : LocalTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- closingTime : LocalTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- company : Company&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- counters : List&amp;lt;Counter&amp;gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- updatedAt : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="578" y="448" width="278" height="335" as="geometry" />
+        </mxCell>
+
+        <!-- Counter -->
+        <mxCell id="Counter" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Counter&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- counterNumber : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- isActive : Boolean = false&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queue : Queue&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- updatedAt : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="978" y="448" width="232" height="195" as="geometry" />
+        </mxCell>
+
+        <!-- CompanyStatus enum -->
+        <mxCell id="CompanyStatus" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;CompanyStatus&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;PENDING&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;ACTIVE&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;SUSPENDED&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="200" y="825" width="188" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== USER SERVICE ==================== -->
+        <mxCell id="us-bg" value="USER SERVICE" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1438" y="388" width="820" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- User -->
+        <mxCell id="User" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;User&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- userId : String (Keycloak UUID)&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- name : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- email : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- phoneNumber : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- score : Double = 100.0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- status : UserStatus&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- suspensionEndDate : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketsCreated : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketsServed : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketsCancelled : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- warningCount : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- noShowCount : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- suspensionCount : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- companyId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- updatedAt : LocalDateTime&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ canCreateTicket() : boolean&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ isSuspended() : boolean&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1438" y="448" width="308" height="456" as="geometry" />
+        </mxCell>
+
+        <!-- UserRestriction -->
+        <mxCell id="UserRestriction" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;UserRestriction&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- userId : String (FK)&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- restrictionType : RestrictionType&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- reason : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- appliedAt : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1878" y="448" width="278" height="198" as="geometry" />
+        </mxCell>
+
+        <!-- UserStatus enum -->
+        <mxCell id="UserStatus" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;UserStatus&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;ACTIVE&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;SUSPENDED&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;BANNED&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1438" y="990" width="188" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- RestrictionType enum -->
+        <mxCell id="RestrictionType" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;RestrictionType&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;WARNING&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;NO_SHOW&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;SUSPENDED&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;SUSPENSION_LIFTED&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;BANNED&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1878" y="728" width="232" height="148" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TICKET SERVICE ==================== -->
+        <mxCell id="ts-bg" value="TICKET SERVICE" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1168" width="715" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- Ticket -->
+        <mxCell id="Ticket" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Ticket&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- id : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueId : Long (FK)&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- userId : String (FK)&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- clientName : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- position : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- status : TicketStatus&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- scoringPriority : Integer = 0&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- estimatedWaitTime : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- calledAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- servedAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- completedAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- counterNumber : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- updatedAt : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1228" width="295" height="372" as="geometry" />
+        </mxCell>
+
+        <!-- TicketStatus enum -->
+        <mxCell id="TicketStatus" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;TicketStatus&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;WAITING&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;CALLED&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;COMPLETED&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;ABSENT&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;CANCELLED&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="618" y="1228" width="192" height="158" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== ESTIMATION SERVICE ==================== -->
+        <mxCell id="es-bg" value="ESTIMATION SERVICE" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="1168" width="738" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- EstimationRequest DTO -->
+        <mxCell id="EstimationRequest" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;dto&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;EstimationRequest&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- position : Integer&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="1228" width="248" height="108" as="geometry" />
+        </mxCell>
+
+        <!-- EstimationResponse DTO -->
+        <mxCell id="EstimationResponse" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;dto&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;EstimationResponse&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- estimatedWaitMinutes : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- position : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- calculatedAt : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="1368" width="248" height="128" as="geometry" />
+        </mxCell>
+
+        <!-- EstimationService -->
+        <mxCell id="EstimationService" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;EstimationService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- defaultServiceTime : int = 3&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueServiceTimes : Map&amp;lt;Long, Integer&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ calculateEstimation(req) : EstimationResponse&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- getAverageServiceTime(queueId) : int&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1428" y="1228" width="368" height="148" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== NOTIFICATION SERVICE ==================== -->
+        <mxCell id="ns-bg" value="NOTIFICATION SERVICE" style="text;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1848" y="1168" width="860" height="38" as="geometry" />
+        </mxCell>
+
+        <!-- TicketCreatedEvent -->
+        <mxCell id="TicketCreatedEvent" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;event&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;TicketCreatedEvent&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- eventType : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- userId : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- clientName : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- position : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- status : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- timestamp : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1848" y="1228" width="258" height="215" as="geometry" />
+        </mxCell>
+
+        <!-- TicketCalledEvent -->
+        <mxCell id="TicketCalledEvent" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;event&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;TicketCalledEvent&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- eventType : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- userId : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- counterNumber : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- previousPosition : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- calledAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- timestamp : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="2158" y="1228" width="258" height="198" as="geometry" />
+        </mxCell>
+
+        <!-- TicketCancelledEvent -->
+        <mxCell id="TicketCancelledEvent" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;event&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;TicketCancelledEvent&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- eventType : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- ticketId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- queueId : Long&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- userId : String&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- previousPosition : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- estimatedWaitTimeMinutes : Integer&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- isLateCancellation : boolean&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- createdAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- cancelledAt : LocalDateTime&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;- timestamp : LocalDateTime&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="1848" y="1508" width="258" height="248" as="geometry" />
+        </mxCell>
+
+        <!-- NotificationConsumer -->
+        <mxCell id="NotificationConsumer" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;consumer&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;NotificationConsumer&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;i&gt;topic: ticket-events&lt;/i&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ handleTicketCreated(event) : void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ handleTicketCalled(event) : void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ handleTicketCancelled(event) : void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="2158" y="1508" width="258" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- SmsService -->
+        <mxCell id="SmsService" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;&amp;lt;&amp;lt;service&amp;gt;&amp;gt;&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;text-align:center;&quot;&gt;&lt;b&gt;SmsService&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;&lt;i&gt;via Twilio&lt;/i&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ sendSms(to, content) : void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="2158" y="1718" width="258" height="118" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== RELATIONS ==================== -->
+
+        <!-- 1. Company (1) composé de Queue (*) -->
+        <mxCell id="r-co-q" style="startArrow=diamondThin;startFill=1;endArrow=open;endFill=0;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Company" target="Queue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r-co-q-l1" value="1" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="466" y="566" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-co-q-l2" value="*" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="548" y="566" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-co-q-lb" value="possède" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=10;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="470" y="544" width="62" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- 2. Queue (1) composé de Counter (*) -->
+        <mxCell id="r-q-ctr" style="startArrow=diamondThin;startFill=1;endArrow=open;endFill=0;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Queue" target="Counter">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r-q-ctr-l1" value="1" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="862" y="566" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-q-ctr-l2" value="*" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="944" y="566" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-q-ctr-lb" value="contient" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=10;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="866" y="544" width="58" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- 3. Company -> CompanyStatus (enum) -->
+        <mxCell id="r-co-cs" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Company" target="CompanyStatus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 4. User -> UserStatus (enum) -->
+        <mxCell id="r-u-us" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="User" target="UserStatus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 5. UserRestriction -> User (association, userId) -->
+        <mxCell id="r-ur-u" style="endArrow=open;endFill=0;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.35;entryDx=0;entryDy=0;" edge="1" parent="1" source="UserRestriction" target="User">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r-ur-u-l1" value="*" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1842" y="528" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-ur-u-l2" value="1" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1752" y="528" width="24" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- 6. UserRestriction -> RestrictionType (enum) -->
+        <mxCell id="r-ur-rt" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="UserRestriction" target="RestrictionType">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 7. Ticket -> TicketStatus (enum) -->
+        <mxCell id="r-t-ts" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ticket" target="TicketStatus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 8. Ticket.queueId -> Queue (cross-service) -->
+        <mxCell id="r-t-q" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ticket" target="Queue">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="348" y="1130" />
+              <mxPoint x="648" y="1130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-t-q-l1" value="*" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="326" y="1196" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-t-q-l2" value="1" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="626" y="796" width="24" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="r-t-q-lb" value="&lt;&lt;cross-service&gt;&gt;" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="432" y="1110" width="120" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- 9. Ticket.userId -> User (cross-service) -->
+        <mxCell id="r-t-u" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ticket" target="User">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1120" y="1303" />
+              <mxPoint x="1200" y="1303" />
+              <mxPoint x="1200" y="1010" />
+              <mxPoint x="1438" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-t-u-lb" value="&lt;&lt;cross-service&gt;&gt;" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="1172" y="1108" width="120" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- 10. User.userId -> Keycloak (cross-service) -->
+        <mxCell id="r-u-kc" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="User" target="Keycloak">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1592" y="388" />
+              <mxPoint x="1620" y="388" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-u-kc-lb" value="userId →" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1508" y="365" width="70" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- 11. User.companyId -> Company (cross-service) -->
+        <mxCell id="r-u-co" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="User" target="Company">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1280" y="676" />
+              <mxPoint x="1280" y="420" />
+              <mxPoint x="331" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-u-co-lb" value="companyId →" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="760" y="398" width="86" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="r-u-co-lb2" value="&lt;&lt;cross-service&gt;&gt;" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="754" y="416" width="120" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- 12. EstimationService -> EstimationRequest -->
+        <mxCell id="r-es-req" style="endArrow=open;endFill=0;html=1;rounded=0;exitX=0;exitY=0.6;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="EstimationService" target="EstimationRequest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 13. EstimationService -> EstimationResponse -->
+        <mxCell id="r-es-res" style="endArrow=open;endFill=0;html=1;rounded=0;exitX=0;exitY=0.85;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="EstimationService" target="EstimationResponse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 14. EstimationService -> Queue (cross-service: lit averageServiceTime) -->
+        <mxCell id="r-es-q" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="EstimationService" target="Queue">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1300" y="1302" />
+              <mxPoint x="1300" y="1110" />
+              <mxPoint x="787" y="1110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-es-q-lb" value="averageServiceTime" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="976" y="1090" width="124" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- 15. NotificationConsumer consomme les events (Kafka) -->
+        <mxCell id="r-nc-ev1" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="TicketCreatedEvent" target="NotificationConsumer">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2130" y="1335" />
+              <mxPoint x="2130" y="1588" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-nc-ev2" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="TicketCalledEvent" target="NotificationConsumer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r-nc-ev3" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" edge="1" parent="1" source="TicketCancelledEvent" target="NotificationConsumer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r-nc-ev-lb" value="@KafkaListener" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="2110" y="1448" width="100" height="18" as="geometry" />
+        </mxCell>
+
+        <!-- 16. NotificationConsumer -> SmsService -->
+        <mxCell id="r-nc-sms" style="endArrow=open;endFill=0;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="NotificationConsumer" target="SmsService">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 17. Ticket -> Notification (cross-service: Kafka events publiés par ticket-service) -->
+        <mxCell id="r-t-nc" style="endArrow=open;endFill=0;dashed=1;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ticket" target="TicketCreatedEvent">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="1414" />
+              <mxPoint x="1440" y="1330" />
+              <mxPoint x="1848" y="1330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r-t-nc-lb" value="publie via Kafka" style="text;html=1;align=center;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=9;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="1530" y="1308" width="108" height="18" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
